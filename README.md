@@ -58,11 +58,19 @@ jiry_2的方法是对线段树每个节点维护三个值
 
 不多说，unordered_map走起
 
+自定义hash函数:
+
+```c++
+struct my_hash {
+  size_t operator()(int x) const { return x; }
+};
+unordered_map<int,int,my_hash> mp;
+```
+
 ### pb_ds 哈希
 
 ```c++
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/hash_policy.hpp>
+#include <bits/extc++.h>
 using namespace __gnu_pbds;
 cc_hash_table <int,int> a;//拉链
 gp_hash_table <int,int> b;//查探 (更快)
@@ -73,11 +81,59 @@ gp_hash_table <int,int> b;//查探 (更快)
 
 ## 左偏树
 
+废话不说 直接上板子
+
+```c++
+struct LeftistTree//注意initialize!!!!!!!!!merge之类的操作都必须先find根再操作
+{
+	struct Node
+	{
+		int l,r,v,fa;//Left Son,Right Son,Value,Father
+	}T[maxn];
+	int dist[maxn];
+	void init(int n){rep(i,1,n) T[i].fa=i;}//////////important
+	int find(int x){while (T[x].fa!=x) x=T[x].fa;return x;}///find ancestor
+	int merge(int x,int y)//merge x and y and return the new root
+	{
+		if (!x) return y;
+		if (!y) return x;
+		if (T[x].v<T[y].v) swap(x,y);//默认是大根堆 
+		int rrt;//new right root
+		if (T[x].r) rrt=merge(T[x].r,y);else rrt=y;
+		T[x].r=rrt;T[rrt].fa=x;
+		if (dist[T[x].l]<dist[T[x].r]||!T[x].l) swap(T[x].l,T[x].r);
+		if (!T[x].r) dist[x]=0;else dist[x]=dist[T[x].r]+1;
+		return x;
+	}
+	int pop(int x)
+	{
+		T[x].fa=x;T[T[x].l].fa=T[x].l;T[T[x].r].fa=T[x].r;
+		int nrt=merge(T[x].l,T[x].r);
+		T[x].l=0;T[x].r=0;dist[x]=0;
+		return nrt;
+	}
+}lt;
+```
+
 ## pb_ds 配对堆
 
-## 块状数组
-
-(复习)
+```c++
+#include <bits/extc++.h>
+//using namespace __gnu_pbds;//容易冲突 最好不加
+__gnu_pbds::priority_queue<pairs,greater<pairs>,__gnu_pbds::pairing_heap_tag>h[5];
+int main()
+{
+	h[1].join(h[2]);//把h[2]合并进h[1],并清空h[2]
+	pairs p=h[1].top();
+	h[1].pop();
+	priority_queue <int> p;
+	priority_queue <int>::point_iterator it=p.push(0);
+	p.push(1);p.push(2);
+	p.modify(it,3);//修改it迭代器所指数据的值，结束后p.top()==3
+	p.erase(it);//删除it迭代器所指数据，结束后p.top()==2
+	return 0;
+}
+```
 
 ## 块状链表
 
@@ -90,8 +146,6 @@ From OIWiki
 ## ST表
 
 ## 区间树状数组
-
-## 线段树特殊操作
 
 ## 划分树
 
