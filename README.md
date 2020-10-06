@@ -67,7 +67,7 @@ struct my_hash {
 unordered_map<int,int,my_hash> mp;
 ```
 
-### pb_ds 哈希
+### pb_ds 哈希//卡常
 
 ```c++
 #include <bits/extc++.h>
@@ -77,11 +77,7 @@ gp_hash_table <int,int> b;//查探 (更快)
 //当普通unordered_map用可以卡常
 ```
 
-大概没大用
-
 ## 左偏树
-
-废话不说 直接上板子
 
 ```c++
 struct LeftistTree//注意initialize!!!!!!!!!merge之类的操作都必须先find根再操作
@@ -137,15 +133,102 @@ int main()
 
 ## 块状链表
 
-(好像是差不多的东西)
-
-## 树上分块算法&莫队
-
-From OIWiki
+就是外层链表内层数组，走$O(\sqrt{n})$次一定能查到，同时可以每个块打标记，这个看起来挺好写，用到可能性也比较小，功能基本被几种平衡树覆盖，所以不贴板子了
 
 ## ST表
 
-## 区间树状数组
+```c++
+#define log2(x) (31-__builtin_clz(x))
+const int maxn=111111,logn=log2(maxn);
+int n,m,st[maxn][logn+1];
+int main()
+{
+	read(n,m);
+	rep(i,1,n) read(st[i][0]);
+	rep(i,1,logn)
+			for (int j=1;j+(1<<i)-1<=n;j++)
+				st[j][i]=max(st[j][i-1],st[j+(1<<(i-1))][i-1]);
+	while (m--)
+	{
+		int l,r;
+		read(l,r);
+		int s=log2(r-l+1);
+		printf("%d\n",max(st[l][s],st[r-(1<<s)+1][s]));
+	}
+	return 0;
+}
+```
+
+## 区间树状数组&二维区间树状数组
+
+区间树状数组(初始值的前缀和需要预处理存在sum中)
+
+```c++
+#define lowbit(x) (x&(-x))
+struct interval_BIT
+{
+	struct BIT
+	{
+		LL c[maxn];
+		void cg(int x,LL v){while (x<=n) {c[x]+=v;x+=lowbit(x);}}
+		LL qr(LL x){LL res=0;while (x){res+=c[x];x-=lowbit(x);}return res;}
+	}b,c;
+	LL sum[maxn];
+	void change(int l,int r,LL v)
+    {
+        b.cg(l,v);b.cg(r+1,-v);
+        c.cg(l,v*l);c.cg(r+1,-v*(r+1));
+    }
+	LL query(int l,int r)
+	{
+		LL suml=sum[l-1]+(LL)l*b.qr(l-1)-c.qr(l-1);
+		LL sumr=sum[r]+(LL)(r+1)*b.qr(r)-c.qr(r);
+		return sumr-suml;
+	}
+}ibit;
+```
+
+```c++
+#define lowbit(x) (x&(-x))
+struct interval_d2BIT
+{
+	struct d2BIT
+	{
+		LL t[maxn][maxn];
+		void cg(int a,int b,LL v)
+		{
+			for (int i=a;i<=n;i+=lowbit(i))
+				for (int j=b;j<=m;j+=lowbit(j))
+					t[i][j]+=v;
+		}
+		LL qr(int a,int b)
+		{
+			LL res=0;
+			for (int i=a;i;i-=lowbit(i))
+				for (int j=b;j;j-=lowbit(j))
+					res+=t[i][j];
+			return res;
+		}
+	}t[5];
+	void cg(int a,int b,LL v)
+	{
+		t[1].cg(a,b,v);t[2].cg(a,b,v*a);
+		t[3].cg(a,b,v*b);t[4].cg(a,b,v*a*b);
+	}
+	void change(int a,int b,int c,int d,LL v)
+	{
+		cg(a,b,v);cg(c+1,d+1,v);
+		cg(a,d+1,-v);cg(c+1,b,-v);
+	}
+	LL qr(int a,int b)
+	{
+		return t[1].qr(a,b)*(a+1)*(b+1)-t[2].qr(a,b)*(b+1)-t[3].qr(a,b)*(a+1)+t[4].qr(a,b);
+	}
+	LL query(int a,int b,int c,int d){return qr(c,d)+qr(a-1,b-1)-qr(c,b-1)-qr(a-1,d);}
+}i2dbit;
+```
+
+
 
 ## 划分树
 
