@@ -228,15 +228,141 @@ struct interval_d2BIT
 }i2dbit;
 ```
 
-
-
-## 划分树
-
-(这是啥)
-
 ## 替罪羊树
 
-要研究什么它是干不了的 找替代（treap之类的)
+```c++
+const double alpha=0.75;
+struct node
+{
+	node *ch[2];
+	int key,size,cover,exist;//cover:actual size+empty size
+	void pushup()
+	{
+		size=ch[0]->size+ch[1]->size+exist;
+		cover=ch[0]->cover+ch[1]->cover+1;
+	}
+	bool isbad()
+	{
+		return ((ch[0]->cover>cover*alpha)||(ch[1]->cover>cover*alpha));
+	}
+};
+struct sgt
+{
+	node mem[maxn],*tail,*root,*null,*bc[maxn];
+	int top;
+	node *newnode(int key)
+	{
+		node *p=top?bc[top--]:tail++;
+		p->ch[0]=p->ch[1]=null;
+		p->size=p->cover=p->exist=1;
+		p->key=key;
+		return p;
+	}
+	void travel(node *p,vector<node *> &v)
+	{
+		if (p==null) return;
+		travel(p->ch[0],v);
+		if (p->exist) v.push_back(p);
+		else bc[++top]=p;
+		travel(p->ch[1],v);
+	}
+	node *divide(vector<node *> &v,int l,int r)
+	{
+		if (l>=r) return null;
+		int mid=(l+r)>>1;
+		node *p=v[mid];
+		p->ch[0]=divide(v,l,mid);
+		p->ch[1]=divide(v,mid+1,r);
+		p->pushup();
+		return p;
+	}
+	void rebuild(node *&p)
+	{
+		static vector<node*>v;
+		v.clear();
+		travel(p,v);
+		p=divide(v,0,v.size());
+	}
+	node **insert(node *&p,int key)
+	{
+		if (p==null)
+		{
+			p=newnode(key);
+			return&null;
+		}
+		p->size++,p->cover++;
+		node **res=insert(p->ch[key>=p->key],key);
+		if (p->isbad()) res=&p;
+		return res;
+	}
+	void erase(node *p,int id)
+	{
+		p->size--;
+		int offset=p->ch[0]->size+p->exist;
+		if (p->exist&&id==offset)
+		{
+			p->exist=0;
+			return;
+		}
+		if (id<=offset) erase(p->ch[0],id);
+		else erase(p->ch[1],id-offset);
+	}
+	void init()
+	{
+		tail=mem;
+		null=tail++;
+		null->ch[0]=null->ch[1]=null;
+		null->cover=null->size=null->key=0;
+		root=null;
+		top=0;
+	}
+	sgt()
+	{
+		init();
+	}
+	void insert(int key)
+	{
+		node **p=insert(root,key);
+		if (*p!=null) rebuild(*p);
+	}
+	int rank(int key)
+	{
+		node *now=root;
+		int ans=1;
+		while (now!=null)
+		{
+			if (now->key>=key)now=now->ch[0];
+			else
+			{
+				ans+=now->ch[0]->size+now->exist;
+				now=now->ch[1];
+			}
+		}
+		return ans;
+	}
+	int kth(int k)
+	{
+		node *now=root;
+		while (now!=null)
+		{
+			if (now->exist&&now->ch[0]->size+1==k) return now->key;
+			if (now->ch[0]->size>=k) now=now->ch[0];
+			else k-=now->ch[0]->size+now->exist,now=now->ch[1];
+		}
+		return -1;
+	}
+	void erase(int k)
+	{
+		erase(root,rank(k));
+		if (root->size<alpha*root->cover) rebuild(root);
+	}
+};
+sgt t;
+```
+
+区间操作想了想是可以做的，只要拍扁时候把所有标记下放，再在建树的时候一个一个统计上来即可
+
+对于随机数据应该是常数最小的平衡树了
 
 ## pb_ds tree
 
@@ -254,9 +380,9 @@ struct interval_d2BIT
 
 ### 可并堆
 
-(研究pb_ds可不可干)
+## 划分树
 
-## 各种树套树
+(这是啥)各种树套树
 
 ## KD-Tree
 
