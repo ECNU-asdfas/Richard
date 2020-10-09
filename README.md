@@ -366,13 +366,157 @@ sgt t;
 
 ## pb_ds tree
 
-## 跳表
+标准写法：
+
+```c++
+int n;
+__gnu_pbds::tree<int,int,greater<int>,__gnu_pbds::rb_tree_tag,__gnu_pbds::tree_order_statistics_node_update> T1;//map
+//splay_tree_tag ov_tree_tag
+__gnu_pbds::tree<LL,__gnu_pbds::null_type,less<LL>,__gnu_pbds::rb_tree_tag,__gnu_pbds::tree_order_statistics_node_update> T2;//set old->null_mapped_type
+int main()
+{
+	read(n);
+	rep(i,1,n)
+	{
+		int op;LL x;
+		read(op);read(x);
+		LL ans=-inf;//LL存左移20是相当于开pair
+		switch(op)
+		{
+			case 1:
+				T2.insert((x<<20)+i);
+			break;
+			case 2:
+				T2.erase(T2.lower_bound(x<<20));
+			break;
+			case 3:
+				cout<<T2.order_of_key(x<<20)+1<<endl;//查询x的排名
+			break;
+			case 4:
+				ans=*T2.find_by_order(x-1);//查询排名为x的是多少
+			break;
+			case 5:
+				ans=*--T2.lower_bound(x<<20);//x的前驱
+			break;
+			case 6:
+				ans=*T2.lower_bound((x+1)<<20);//x的后继
+			break;
+			//T2.join(T3) 在两棵树的值域不重合的情况下把T3合并入T2
+			//T2.split(v,T3) 小于等于v的被留着，剩下的被丢到T3中
+		}
+		if (ans!=-inf) cout<<(ans>>20)<<endl;
+	}
+```
+
+自定义维护的写法(由于修改只能在插入删除的时候操作，所以其实有很大限制)(也就是没法区间修改)
+
+```c++
+using namespace __gnu_pbds;
+template<class Node_CItr,class Node_Itr,class Cmp_Fn,class _Alloc>
+struct my_node_update
+{
+	typedef int metadata_type;
+	int order_of_key(pairs x)
+	{
+		int ans=0;
+		Node_CItr it=node_begin();
+		while(it!=node_end())
+		{
+			Node_CItr l=it.get_l_child();//返回迭代器
+			Node_CItr r=it.get_r_child();
+			if (Cmp_Fn()(x,**it))//**it获取it的信息
+				it=l;
+			else
+			{
+				ans++;
+				if (l!=node_end()) ans+=l.get_metadata();//返回维护的数据
+				it=r;
+			}
+		}
+		return ans;
+	}
+	void operator()(Node_Itr it,Node_CItr end_it)
+	{
+		Node_Itr l=it.get_l_child();
+		Node_Itr r=it.get_r_child();
+		int left=0,right=0;
+		if (l!=end_it) left=l.get_metadata();
+		if (r!=end_it) right=r.get_metadata();
+		const_cast<int&>(it.get_metadata())=left+right+1;
+	}
+	virtual Node_CItr node_begin() const=0;
+	virtual Node_CItr node_end() const=0;
+};
+tree<pairs,null_type,less<pairs>,rb_tree_tag,my_node_update> rbt;
+```
 
 ## 可持久化数据结构
 
 ### 线段树
 
-### 块状数组
+### Rope
+
+```c++
+#include <ext/rope>
+int n,now,len;
+__gnu_cxx::rope <char> a,b,c;//b is reversed
+char s[2000000],rs[2000000];//1234567 654321
+int main()
+{
+	scanf("%d",&n);
+	int x;
+	while (n--)
+	{
+		scanf("%s",s);
+		switch(s[0])
+		{
+			case 'M':scanf("%d",&now);break;//move
+			case 'P':now--;break;//previous
+			case 'N':now++;break;//next
+			case 'G':{putchar(a[now]);if (a[now]!='\n') putchar('\n');}break;//get
+			case 'I'://insert
+			{
+				scanf("%d",&x);len=a.length();getchar();
+				rep(i,0,x-1)
+				{
+					s[i]=getchar();
+					rs[x-i-1]=s[i];
+				}
+				rs[x]=s[x]='\0';
+				a.insert(now,s);
+				b.insert(len-now,rs);
+				break;
+			}
+			case 'D'://delete
+			{
+				scanf("%d",&x);len=a.length();
+				a.erase(now,x);
+				b.erase(len-now-x,x);
+				break;
+			}
+			case 'R'://reverse
+			{
+				scanf("%d",&x);len=a.length();
+				c=a.substr(now,x);//从now开始提取x个
+				a=a.substr(0,now)+b.substr(len-now-x,x)+a.substr(now+x,len-now-x);
+				b=b.substr(0,len-now-x)+c+b.substr(len-now,now);
+				break;
+			}
+			//a.push_back()
+			//a.push_front()
+			//a.copy(pos,len,s)把a中pos开始长为len的串复制到s中(s可以是数组)
+			//a.replace(pos,len,x)把pos开始的len个用一个x替换
+			//a.replace(pos,len1,s,len2) 删除a从pos开始的len1位并在那里插入s的前len2位
+            /*
+            	rope<type>* R[1000];
+				R[i] = new rope<type>(*R[v]);
+				存下根即可可持久化
+			*/
+		}
+	}
+	return 0;
+}
+```
 
 ### 平衡树
 
@@ -393,3 +537,21 @@ OI-Wiki上的...好像是个方便写的次暴力算法
 ## LCT
 
 ## ~~NTT/TopTree~~
+
+## pb_ds通用头
+
+```c++
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/hash_policy.hpp>
+#include <ext/pb_ds/trie_policy.hpp>
+#include <ext/pb_ds/priority_queue.hpp>
+```
+
+# 离线算法
+
+## 带修改莫队
+
+## 整体二分
+
+## cdq分治
