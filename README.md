@@ -454,6 +454,155 @@ tree<pairs,null_type,less<pairs>,rb_tree_tag,my_node_update> rbt;
 
 ### 线段树
 
+经典的区间第k大(权值线段树)
+
+```c++
+const int maxn=100001,maxvalue=1e9+2;
+int n,m,a[maxn],x,y,k;
+struct node
+{
+	node *l,*r;
+	int value;
+	node():l(0),r(0),value(0){}
+	node(node *ll,node *rr):l(ll),r(rr),value((ll?ll->value:0)+(rr?rr->value:0)){}
+	node(int vv):l(0),r(0),value(vv){}
+};
+node *root[maxn];
+char memorypool[maxn*sizeof(node)*60];//1 char=1 byte
+char *memorypoolptr=memorypool;
+inline void* myalloc(size_t size)
+{
+	return (memorypoolptr+=size)-size;
+}
+inline int down(double x) 
+{
+	if(x >= 0) return x;
+	x -= 0.999999;
+	return x;
+}
+#define newnode new (myalloc(sizeof(node))) node
+node* insert(node *x,int k,int L=-maxvalue,int R=maxvalue)
+{
+	if (L==R) return newnode(x?x->value+1:1);
+	int mid=down((L+R)/2.0);
+	if (k<=mid) return newnode(insert(x?x->l:0,k,L,mid),x?x->r:0);
+	else return newnode(x?x->l:0,insert(x?x->r:0,k,mid+1,R));
+}
+int kth(node *x,int k,int L=-maxvalue,int R=maxvalue)
+{
+	if (L==R) return L;
+	int mid=down((L+R)/2.0);
+	if (k<=(x->l?x->l->value:0)) return kth(x->l,k,L,mid);
+	else return kth(x->r,k-(x->l?x->l->value:0),mid+1,R);
+}
+int kth(node *x,node *y,int k,int L=-maxvalue,int R=maxvalue)
+{
+	if (L==R) return L;
+	if (!x) return kth(y,k,L,R);
+	int mid=down((L+R)/2.0),temp=(y->l?y->l->value:0)-(x->l?x->l->value:0);
+	if (k<=temp) return kth(x->l,y->l,k,L,mid);
+	else return kth(x->r,y->r,k-temp,mid+1,R);
+}
+int main()
+{
+	scanf("%d%d",&n,&m);
+	root[0]=newnode();
+	rep(i,1,n) 
+	{
+		scanf("%d",&a[i]);
+		root[i]=insert(root[i-1],a[i]);
+	}
+	rep(i,1,m)
+	{
+		scanf("%d%d%d",&x,&y,&k);
+		printf("%d\n",kth(root[x-1],root[y],k));
+	}
+	return 0;
+}
+```
+
+可持久化数组
+
+```c++
+#define newnode new PA::node
+namespace PA
+{
+	struct node
+	{
+		node *l,*r;
+		int value;
+		node():l(0),r(0),value(0){}
+		node(node *ll,node *rr):l(ll),r(rr),value((ll?ll->value:0)+(rr?rr->value:0)){}
+		node(int vv):l(0),r(0),value(vv){}
+		node(node *y):l(y->l),r(y->r),value(y->value){}
+	};
+	node *build(int *a,int L=1,int R=n)
+	{
+		if (L==R) return newnode(a[L]);
+		int mid=(L+R)/2;
+		return newnode(build(a,L,mid),build(a,mid+1,R));
+	}
+	node *replace(node *x,const int &pos,const int &val,int L=1,int R=n)
+	{
+		if (L==R) {return newnode(val);}
+		int mid=(L+R)/2;
+		if (pos<=mid) return newnode(replace(x?x->l:0,pos,val,L,mid),x?x->r:0);
+		else return newnode(x?x->l:0,replace(x?x->r:0,pos,val,mid+1,R));
+	}
+	int query(node *x,const int &pos,int L=1,int R=n)
+	{
+		if (L==R) return x->value;
+		int mid=(L+R)/2;
+		if (pos<=mid) return query(x->l,pos,L,mid);
+		else return query(x->r,pos,mid+1,R);
+	}
+};
+PA::node *root[maxn];
+int main()
+{
+	read(n,m);
+	root[0]=newnode();
+	rep(i,1,n) read(a[i]);
+	root[0]=PA::build(a);
+	rep(i,1,m)
+	{
+		int op,pos,vir,val;
+		read(vir,op,pos);
+		root[i]=newnode(root[vir]);
+		if (op==1)
+		{
+			read(val);
+			root[i]=PA::replace(root[i],pos,val);
+		}
+		else
+		{
+			printf("%d\n",PA::query(root[i],pos));
+		}
+	}
+	return 0;
+}
+```
+
+[POI2014]KUR-Couriers
+
+题意:给一个数列，每次询问一个区间内有没有一个数出现次数超过一半
+
+```c++
+int query(node *x,node *y,const int &k,int L=0,int R=maxvalue)
+{
+	if (L==R) return L;
+	if (!x) return query(y,k,L,R);
+	int mid=(L+R)/2,suml=(y->l?y->l->value:0)-(x->l?x->l->value:0),sumr=(y->r?y->r->value:0)-(x->r?x->r->value:0);
+	if (k<suml) return query(x->l,y->l,k,L,mid);//若左子树所有元素出现次数总和>(y-x+1)/2
+	if (k<sumr) return query(x->r,y->r,k,mid+1,R);
+	return 0;
+}
+query(root[x-1],root[y],(y-x+1)/2)
+其余部分和k大值几乎一样
+```
+
+
+
 ### Rope
 
 ```c++
@@ -502,15 +651,17 @@ int main()
 				b=b.substr(0,len-now-x)+c+b.substr(len-now,now);
 				break;
 			}
-			//a.push_back()
+			//a.push_back()=a.append()
 			//a.push_front()
+            //a.insert(pos,a+1,n) a数组第一位开始的n位插入到pos去
 			//a.copy(pos,len,s)把a中pos开始长为len的串复制到s中(s可以是数组)
 			//a.replace(pos,len,x)把pos开始的len个用一个x替换
 			//a.replace(pos,len1,s,len2) 删除a从pos开始的len1位并在那里插入s的前len2位
             /*
             	rope<type>* R[1000];
 				R[i] = new rope<type>(*R[v]);
-				存下根即可可持久化
+				存下根即可可持久化（调用函数时都需要R[1]->append(xxx)）
+				可以直接对R[i]修改 效果相当于对第i个版本的rope进行修改
 			*/
 		}
 	}
@@ -526,7 +677,9 @@ int main()
 
 ## 划分树
 
-(这是啥)各种树套树
+(这是啥)
+
+## 各种树套树
 
 ## KD-Tree
 
