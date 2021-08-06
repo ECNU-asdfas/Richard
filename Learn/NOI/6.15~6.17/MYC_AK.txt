@@ -1,0 +1,69 @@
+题目来源：https://www.hackerrank.com/contests/infinitum18/challenges/rational-sums
+题目大意：
+    ans=0;for (int i=1;;i++)ans+=P(i)/Q(i);求ans趋近于什么数。
+    P(x)=b0+b1*x+b2*x^2+...+b(n-2)*x^(n-2);
+    Q(x)=(x+a1)*(x+a2)*...*(x+an)
+    [a],[b]给出
+题目解法：
+    对于[b0+b1*x+b2*x^2+...+b(n-2)*x^(n-2)]/[(x+a1)*(x+a2)*...*(x+an)]一定可以表示为sigma{ci/(x+ai)}
+    那么P(x)=sigma{ci*Q(x)/(x+ai)} 将(-ai)带入P，那么P(-ai)=ci*Q(-ai)/(x+ai) {Q(x)中存在(x+ai)项，上下可约}
+    所以ci=P(-ai)*(x+ai)/Q(-ai)
+    求出ci之后，只需求出每一项的趋近值即可。枚举下面的底数n，对于ai<n求sigma{ci/n}，当n大于所有ai时即求sigma{ci}/n，此时为0。
+
+
+
+
+题目来源：https://www.hackerrank.com/contests/infinitum18/challenges/parity-party
+题目大意：
+    有a个人想要奇数个数，b个人想要偶数个数，c个人想要任意个数，总共有n个数。求分配的方案数。
+题目解法
+    对于奇数：f1(x)=x/1!+x^3/3!+...x^(2n+1)/(2n+1)!
+    对于偶数：f2(x)=1+x^2/2!+...x^(2n)/(2n)!
+    对于任意数：f3(x)=1+x/1!+x^2/2!+...x^n/n!
+    所以ans=n!*(f1(x)^a)*(f2(x)^b)*(f3(x)^c)的第n项的系数。
+    即ans=n!*((e^x-e^(-x))/2)^a*((e^x+e^(-x))/2)^b+e^cx=n!*(1-e^(-2x))^a*(1+e^(-2x))^b*(e^(a+b+c)x/2^(a+b))
+    FFT即可。
+    
+    
+    
+    
+题目来源：https://www.hackerrank.com/contests/world-codesprint-11/challenges/puzzle-9
+题目大意：
+    将一个R*C的矩形分成若干个联通块，给出每个联通块要求将其放入尽可能小的矩形n*m中。得分为R*C/n*m
+题目解法：
+    30%：贪心地摆放，适当的调整。
+    70%：将每个联通块放大到一个矩形，按照矩形的size从大到小排序。然后将联通块贪心merge。
+    80%：在70%的基础上进行少量的两两枚举以求得更优的ans
+    
+
+
+题目来源：https://www.hackerrank.com/contests/world-codesprint-11/challenges/road-trip-1
+题目大意：
+    给定一个序列，每个点可以免费增加ins_i的油量，每个点走到下一个需要消耗del_i的油量。你可以在i点花费ci得到一单位的油量。油箱无限大。每次询问从ai到bi最小花费。
+题目解法：
+    考录每个点（走到当前点时油量为0）向后走走到第一个油量不够的点，那么将这个点的父亲设为该点。于是得到了一棵树，在对与每个点找到它第一个向上跳油价格更便宜的点，设为up[i]。考虑倍增，每个点向上跳2^j所消耗的油量，以up[i]为界，分类转移即可。
+
+
+
+
+
+题目来源：https://www.hackerrank.com/contests/101hack49/challenges/sorting-lists
+题目大意：
+    给你若个线段，一个好的线段集合定义为线段两两有交。求字典序第k小的线段。
+题目解法：
+    首先一个好的线段集合的个数是O(n)的。（考虑只有端点进出集合时才可能产生新的线段集合）
+    对于一个集合可以用hash判重。
+    对于一个好的线段集合可以用交集中的任意一点表示。
+    枚举每个线段，判断第i线段是否在ans中。可以求出包含第i条线段的好的线段集合的个数，和k比较即可判断。
+    
+    
+    
+    
+
+题目来源：https://www.hackerrank.com/contests/w32/challenges/special-substrings
+题目大意：
+    给定一个字符串，求前i个字符组成的字符串中所有回文串的不同前缀个数。
+题目解法：
+    考虑第i个字符加入后对答案的增量。
+    加入一个字符只需将以i为结尾的回文串加入。对于要求不同的前缀个数，只需求出将所有回文排序之后减去两两之间的LCP即可。
+    所以用Treap来维护拍好序之后的回文串即可。

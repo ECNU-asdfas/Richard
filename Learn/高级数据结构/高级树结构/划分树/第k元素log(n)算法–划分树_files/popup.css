@@ -1,0 +1,21 @@
+/* Michael Champanis <michael.champanis@gmail.com> */
+
+#social-list {
+  text-align: left;
+  list-style-type: none;
+  padding: 0 0 0 15px;
+}
+
+#social-list li {
+  padding: 2px;
+}
+
+#social-list li img {
+  position: relative;
+  top: 4px;
+  margin-right: 4px;
+}
+
+a.friend-info {
+  cursor: pointer;
+}

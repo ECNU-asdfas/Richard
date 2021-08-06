@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problem type="TRA_0_4" maker="ccr-plus">
+    <source dir="obtuse" file="obtuse" code="100">
+        <language file="obtuse.c" time="10" cmd="gcc -o obtuse obtuse.c -lm -static -O2"/>
+        <language file="obtuse.cpp" time="10" cmd="g++ -o obtuse obtuse.cpp -lm -static -O2"/>
+        <language file="obtuse.pas" time="10" cmd="fpc obtuse.pas -O2"/>
+    </source>
+    <task input="obtuse.in" checker="spj.exe" time="10" output="obtuse.out">
+        <subtask score="10">
+            <point mem="512" in="obtuse1.in" out="obtuse1.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse2.in" out="obtuse2.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse3.in" out="obtuse3.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse4.in" out="obtuse4.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse5.in" out="obtuse5.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse6.in" out="obtuse6.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse7.in" out="obtuse7.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse8.in" out="obtuse8.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse9.in" out="obtuse9.out" time="2"/>
+        </subtask>
+        <subtask score="10">
+            <point mem="512" in="obtuse10.in" out="obtuse10.out" time="2"/>
+        </subtask>
+    </task>
+</problem>

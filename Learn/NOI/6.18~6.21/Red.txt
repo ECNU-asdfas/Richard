@@ -1,0 +1,43 @@
+题目来源：
+	https://www.hackerrank.com/contests/w31/challenges/split-plane/problem
+题目大意：
+	平面上有 n 条平行与坐标轴的线段，求这个平面被分为了几个区域。
+	n <= 1e5
+题目解法：
+	根据欧拉公式 F=\sum(E-V+1)+1 ，扫描线维护每个信息即可。
+
+题目来源：
+	https://www.hackerrank.com/contests/w30/challenges/substring-queries
+题目大意：
+	n 个字符串，每次询问两个字符串 s_i s_j, 求 LCS(s_i,s_j) 。
+	n <= 1e5
+	\sum |s_i| <= 1e5
+题目解法：
+	对每个串建 sam ，对每个询问用较小串在较大串的 sam 上跑，维护答案。
+	对相同的询问记忆化之后，总复杂度为 n\sqrt(n) 。
+
+题目来源：
+	https://www.hackerrank.com/contests/w30/challenges/a-graph-problem
+题目大意：
+	求一个诱导子图，使得其三元环个数与点数比值最大。
+	n <= 50
+题目解法：
+	二分答案，变为判定性问题： cnt1-mid*cnt2>0 。
+	枚举每个三元环，取这个三元环有 1 的收益，对应的三个点必须要选，代价为 mid ，跑最大权闭合子图即可。
+	
+题目来源：
+	https://www.hackerrank.com/contests/101hack47/challenges/summing-in-a-tree
+题目大意：
+	有一个 n 个点的树，对每个深度 h ，询问有多少点使得其子树中深度恰为 h 的点数量 >= a_h 。
+题目解法：
+	一个点子树中深度恰为 h 的点在 dfs 序中是连续的，因此，我们直接枚举所有连续 a_h 个深度为 h 的点，求出他们的 LCA 。那么这些 LCA 及它们到根的路径上的点就是合法的点。那我们把虚树建出来就做完了。
+	
+题目来源：
+	https://www.hackerrank.com/contests/w33/challenges/path-matching
+题目大意：
+	有一个 n 个点的树，每个节点上是一个字符。
+	给你一个字符串 P ， |P| <= 1e2 。
+	q 次询问，问 P 在 u -> v 路径代表的字符串中出现了多少次。
+题目解法：
+	路径分为 u -> lca , 过 lca ， lca -> v 。
+	前后两段用 kmp 预处理，中间每次 kmp 暴力即可。

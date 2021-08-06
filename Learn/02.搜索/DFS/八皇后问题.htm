@@ -1,0 +1,198 @@
+
+<html>
+<head>
+<title>八皇后问题 </title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<link href="STYLE.CSS" rel="stylesheet" type="text/css">
+<title></title>
+</head>
+<body leftmargin="0" topmargin="0" >
+ 
+<div id=menuDiv style='Z-INDEX: 2; VISIBILITY: hidden; WIDTH: 1px; POSITION: absolute; HEIGHT: 1px; BACKGROUND-COLOR: #9cc5f8'></div>
+<table align="center" cellpadding="0" cellspacing="0" width="757" >
+  <tr >
+    <td height="9" width="755"></td>
+  </tr>
+  <tr> 
+    <td width="755"> 
+      <table width="760" border="2" align="center" cellpadding="0" cellspacing="0" height="59">
+        <tr> 
+          <td width="158" height="94" align="right"> 
+            <p align="center"> <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="../../../download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="158" height="94" align="right">
+                <param name="movie" value="../IO.swf">
+                <param name="quality" value="high">
+                <embed src="../IO.swf" width="158" height="94" align="right" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash">
+                </embed>
+              </object> 
+          </td>
+          <td width="602" height="94"  align="left"> 
+            <p align="center"> <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="../../../download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="602" height="94" hspace="0" align="left">
+                <param name="movie" value="../top.swf">
+                <param name="quality" value="high">
+                <embed src="../top.swf" width="602" height="94" hspace="0" align="left" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash">
+                </embed>
+              </object> 
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr > 
+    <td height="9" width="755"></td>
+  </tr>
+</table>
+<table width="756" border="0" align="center" cellpadding="0" cellspacing="0" height="21" >
+  <tr > 
+    <td width="756" height="20" align="center">|| <a href="../../default.htm">返回</a>            
+      || <a href="../index.htm">本站首页</a> ||<a href='index.htm'>奥赛信息</a>||<a href='../itjichu/index.htm'>计算机基础</a>||<a href='../pascal/index.htm'>pascal基础</a>||<a href='../shujujiegou/index.htm'>数据结构</a>||<a href='index.htm'><font color="#FF0000">经典算法</font></a>||<a href='../shitihb/index.htm'>试题汇编</a>||<a href='../zbjiaocheng/index.htm'>校本教程</a>||<a href='../zbxiti/index.htm'>自主练习</a>||           
+    </td>
+  </tr>
+  <tr > 
+    <td height="6" background="../bg_02.gif"></td>
+  </tr>
+</table>
+<SCRIPT language=JavaScript>
+var currentpos,timer;
+
+function initialize()
+{
+timer=setInterval("scrollwindow()",50);
+}
+function sc(){
+clearInterval(timer);
+}
+function scrollwindow()
+{
+currentpos=document.body.scrollTop;
+window.scroll(0,++currentpos);
+if (currentpos != document.body.scrollTop)
+sc();
+}
+document.onmousedown=sc
+document.ondblclick=initialize
+</script>
+<table width="751" border="0" align="center" cellpadding="0" cellspacing="0" height="1">
+  <tr> 
+    <td valign="top" height="513" width="782"> 
+      <table width="778" border="0" align="center" cellpadding="0" cellspacing="0"  style="word-break: break-all" bgcolor="#FFFFFF" bordercolor="#FFFFFF" height="1">
+        <tr> 
+          <td width="594" bgcolor="#FFFFFF" height="39" colspan="2"> 
+            <p align="left"> ||&nbsp;<a href='index.htm'>经典算法&nbsp;</a>&gt;&gt;&nbsp;八皇后问题</p>
+          </td>
+          <td width="166" bgcolor="#FFFFFF" height="39"> 
+            <p align="right"> 双击自动滚屏&nbsp; <input type="button" name="close" value="关闭"  onClick="window.close();return false;" style="width: 47; height: 19"> 
+            </p>
+          </td>
+        </tr>
+        <tr background="../bj.jpg" > 
+          <td  height="2" width="191" valign="middle" class="tdbg"> 　 </td>
+          <td  height="2" width="402" valign="middle" class="tdbg"> 　 </td>
+          <td  height="2" width="165" valign="middle" class="tdbg"> </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="267" width="764" valign="middle" class="tdbg" colspan="3"> 
+            <div align="right"> 
+              <table border="1" width="98%"  cellspacing="0" background="bj.jpg"  cellpadding="0" height="366" bgcolor="#CCCCCC">
+                <tr> 
+                  <td width="98%" height="376" valign="top" background="../bj.jpg"> 
+                      <font face="宋体" size="4"><b>
+                      <p style="MARGIN-TOP: 5px; MARGIN-BOTTOM: 0px" align="center">八皇后问题<br>
+                      </b></font>
+                      <div style="MARGIN: 10px 10px 5px; LINE-HEIGHT: 150%">
+                        <font face="宋体" size="2">
+                        <p align="left">　
+                        <p>{问题描述：在国际象棋8X8的棋盘里摆放8个皇后，使每个皇后都能生存而不互相冲突，即同一行、同一列同对角线（包括主对角线和辅对角线）都只能有一个皇后}</p>
+                        <p>program eightqueen;&nbsp; {本程序可以搜索出所有的解}<br>
+                        var<br>
+                        &nbsp; a,b:array[1..8] of integer;<br>
+                        &nbsp; c:array[-7..7] of integer;<br>
+                        &nbsp; d:array[2..16] of integer;<br>
+                        &nbsp; i,k:integer;&nbsp; {K变量用来存放答案的个数}<br>
+                        &nbsp; fv:text;</p>
+                        <p>&nbsp; procedure print;<br>
+                        &nbsp; var<br>
+                        &nbsp;&nbsp;&nbsp; i:integer;<br>
+                        &nbsp; begin<br>
+                        &nbsp;&nbsp;&nbsp; for i:=1 to 8 do<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; writeln(fv,'第',i:2, 
+                        '行放在第', a[i]:2,'列');&nbsp; {结果输出到文件里}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; k:=k+1;&nbsp; {每输出一个答案计数加1}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; writeln(fv)<br>
+                        &nbsp; end;</p>
+                        <p>&nbsp; procedure try(i:integer);<br>
+                        &nbsp; var<br>
+                        &nbsp;&nbsp;&nbsp; j:integer;<br>
+                        &nbsp; begin<br>
+                        &nbsp;&nbsp;&nbsp; for j:=1 to 8 do<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (b[j]=0) and (c[i-j]=0) 
+                        and (d[i+j]=0) then<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; begin<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        a[i]:=j;&nbsp;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        b[j]:=1; {宣布占领列、主副对角线}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        c[i-j]:=1;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        d[i+j]:=1;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        if i&lt;8 then try(i+1) else print;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        b[j]:=0;&nbsp; {释放占领列、主副对角线}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        c[i-j]:=0;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        d[i+j]:=0<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end<br>
+                        &nbsp; end;</p>
+                        <p>begin<br>
+                        &nbsp; for i:=1 to 8 do a[i]:=0;<br>
+                        &nbsp; for i:=-7 to 7 do c[i]:=0;<br>
+                        &nbsp; for i:=2 to 16 do d[i]:=0;<br>
+                        &nbsp; k:=0;<br>
+                        &nbsp; assign(fv,'jieguo.txt');&nbsp; {指定文件与文件变量相联系}<br>
+                        &nbsp; rewrite(fv);&nbsp; {以写的方式打开文件}<br>
+                        &nbsp; try(1);<br>
+                        &nbsp; close(fv);&nbsp; {一定要记得关闭文件，不然数据有可能丢失}<br>
+                        &nbsp; writeln('共有 ',k:3,' 种摆法')<br>
+                        end.</p>
+                        <p>　</p>
+                        </div>
+                        <br>
+                      </font></td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="2" width="758" valign="middle" class="tdbg" colspan="3" bgcolor="#C0C0C0"> 
+            　 </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="2" width="191" valign="middle" class="tdbg" bgcolor="#C0C0C0"> 
+            　 </td>
+          <td  height="2" width="402" valign="middle" class="tdbg" bgcolor="#C0C0C0"> 
+            <p align="center" style="margin-top: 5; margin-bottom: 0">&nbsp; 
+          </td>
+          <td  height="2" width="165" valign="middle" class="tdbg" bgcolor="#C0C0C0"> 
+            　 </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="2" width="758" valign="middle" class="tdbg" colspan="3" bgcolor="#C0C0C0"> 
+            　 </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="2" width="758" valign="middle" class="tdbg" colspan="3" bgcolor="#C0C0C0"> 
+            　 </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<div align="center"> <font color="#000080" size="2"><br>
+  制作与维护</a>：涡阳县第二中学 许建峰</font></div>
+<p align="center">　</p>
+</body>                                 
+</html>                                 

@@ -1,0 +1,38 @@
+题目来源：https://www.hackerrank.com/contests/w25/challenges/minimal-cyclic-shift
+题目大意：给定数组a[1..n],b[1..n],求最小的p，使得把b顺时针旋转p次的数组b'[]和a[]的差是一个k次及以内的多项式的1..n点值。
+题目解法：
+考虑一个大小为k+2的数组，定义它的权值为[1..k+1]这个多项式在k+2处的点值。
+定义一个大小为n的数组的权值为所有它大小为k+2的子串的权值组成的数组。
+一个结论就是a[]和b'[]是合法的当且仅当它们的权值完全相同。
+假设我们求出了b+b和a的所有子串的权值，用kmp即可求解。
+考虑如何计算一个数组的权值，可以直接用拉格朗日插值在O(n)算一个位置。
+可以发现，这些拉格朗日插值的可以一起写成一个卷积的形式，fft即可。
+
+题目来源：https://www.hackerrank.com/contests/w24/challenges/iterate-it
+题目大意：
+定义一次集合A的操作是这样的：
+	B={};
+	for x in A, y in A(x!=y): append abs(x - y) to B;
+	A=B;
+问一个集合A在几次操作以后会变成空集。
+保证A是正整数集,ai<=50000。
+题目解法：
+可以证明，在经过O(log max)次的操作以后A会变成1,2,3,4,....,x。
+直接用bitset优化暴力即可。
+
+题目来源：https://www.hackerrank.com/contests/ncr-codesprint/challenges/area-of-triangles
+题目大意：求三角形面积并，要求非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常高的精度。
+题目解法：任意两个三角形最多6个交点，把每个x坐标拿出来暴力即可。
+
+题目来源：https://www.hackerrank.com/contests/w25/challenges/dag-queries
+题目大意：给一个dag，支持把点u能到达的点+1和求某个点的值
+题目解法：bitset做连通性，然后对时间分块。
+
+题目来源：https://www.hackerrank.com/contests/101hack41/challenges/tree-color
+题目大意：一个树，每一个点有颜色，每次（假装）ban一个颜色的点，给u能到达的点+1，询问一个点的值。
+题目解法：根号分大颜色和小颜色，直接做即可。
+
+题目来源：https://www.hackerrank.com/contests/ncr-codesprint/challenges/points-and-fences
+题目大意：给n个互不相交的矩形，每次问两个点是否能不经过矩形到达。
+题目解法：给每个矩形赋随机值，求两个点的xor值是否相等即可。
+

@@ -4,40 +4,66 @@
 
 ### 洛谷
 
-P3168
-
 P2468
 
 P4602
 
 P1552
 
+### HDU
+
+6621
+
+5919
+
 ## KDTree：
 
-洛谷P4148 (bzoj4066)
+多校 HDU-1 6951 
+
+## 线段树
+
+多校 HDU-2 6967 维护矩阵
+
+维护等差数列
+
+https://blog.bill.moe/segment-tree-beats-notes/ 线段树区间最值与历史最值-segment tree beats!的扩展
+
+## 树链剖分
+
+多校 HDU-2 6962
 
 ## 杂
 
-P1742 最小圆覆盖（随机增量）
+多校 HDU-3 6982 优惠 最小生成树
 
-CSP-S 2019 NOIP2019
+多校 HDU-3 字符串匹配转化卷积
 
-# 近期待学知识点、待写板子
+多校 nowcoder-5 G 二分 搜索
 
-高斯消元
+多校 HDU-6 7035 博弈论
 
-矩阵求逆
+# 待学知识点、待写板子
 
-倍增lca rmq-lca
-
-***01分数规划
+BSGS 多校 HDU-4 6989
 
 整体二分 cdq分治
 
 pollard-rho
 
-线性规划 单纯形
-
-线性规划与网络流24题
-
 多维偏序 bitset https://blog.csdn.net/weixin_30786657/article/details/97990977
+
+计算几何板子
+
+哈希基础
+
+SA
+
+SAM
+
+KM二分图带权匹配 ~~*带花树一般图匹配*~~
+
+费用流板子 dinic优化
+
+笛卡尔树 应用
+
+*网络流进阶

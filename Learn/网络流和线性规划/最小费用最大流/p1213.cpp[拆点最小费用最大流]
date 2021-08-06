@@ -1,0 +1,86 @@
+#include<iostream>
+#include<queue>
+using namespace std;
+int INF = 30000;
+int SINF = 1000000000;
+int N, M, First, Max_More, Ans;
+int V[210], Cost[210][210];
+int c[210][210], a[210][210];
+int Pre[210], Dis[210];
+bool Used[210];
+queue <int> Q;
+
+int main()
+{
+    scanf("%d%d", &N, &M);
+    for (int i = 1; i <= N; i++) scanf("%d", &V[i]);
+    V[N + 1] = V[0] = M;
+    for (int i = 1; i <= N - 1; i++)
+        for (int j = i + 1; j <= N; j++)
+            scanf("%d", &Cost[i][j]);
+    for (int i = 0; i <= N + 1; i++)
+    {
+        c[i][i + N + 2] = V[i], a[i][i + N + 2] = -INF;
+        c[i + N + 2][i] = 0, a[i + N + 2][i] = INF;
+    }
+    for (int i = 1; i <= N; i++)
+    {
+        c[0 + N + 2][i] = M, a[0 + N + 2][i] = -INF;
+        c[i][0 + N + 2] = 0, a[i][0 + N + 2] = INF;
+        c[i + N + 2][N + 1] = M, a[i + N + 2][N + 1] = -INF;
+        c[N + 1][i + N + 2] = 0, a[N + 1][i + N + 2] = INF;
+    }
+    for (int i = 1; i <= N; i++)
+        for (int j = i + 1; j <= N; j++)
+        {
+            if (Cost[i][j] < 0) c[i + N + 2][j] = 0;
+            else c[i + N + 2][j] = INF, a[i + N + 2][j] = Cost[i][j];
+            c[j][i + N + 2] = 0, a[j][i + N + 2] = -Cost[i][j];
+        }
+    while (1)
+    {
+        while (Q.size() != 0) Q.pop();
+        memset(Used, 0, sizeof (Used));
+        memset(Pre, -1, sizeof (Pre));
+        for (int i = 0; i <= N * 2 + 3; i++)
+            Dis[i] = SINF;
+        Q.push(0);
+        Dis[0] = 0, Used[0] = 1;
+        while (Q.size() != 0)
+        {
+            First = Q.front();
+            for (int i = 0; i <= N * 2 + 3; i++)
+                if (c[First][i] > 0 && Dis[i] > Dis[First] + a[First][i])
+                {
+                    Dis[i] = Dis[First] + a[First][i];
+                    Pre[i] = First;
+                    if (!Used[i])
+                    {
+                        Used[i] = 1;
+                        Q.push(i);
+                    }
+                }
+            Used[First] = 0;
+            Q.pop();
+        }
+        if (Dis[ N * 2 + 3] == SINF) break;
+        First = N * 2 + 3;
+        Max_More = SINF;
+        while (First != 0)
+        {
+            Max_More = min(Max_More, c[Pre[First]][First]);
+            First = Pre[First];
+        }
+        First = N * 2 + 3;
+        while (First != 0)
+        {
+            if (a[Pre[First]][First] > -INF)
+                Ans += Max_More * a[Pre[First]][First];
+            c[Pre[First]][First] -= Max_More;
+            c[First][Pre[First]] += Max_More;
+            First = Pre[First];
+        }
+    }
+    printf("%d\n", Ans);
+    return 0;
+}

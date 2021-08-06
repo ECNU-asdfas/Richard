@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problem maker="ccr-plus" type="ANS_0_4">
+    <source dir="loopy"/>
+    <task checker="spj2" time="10">
+        <subtask score="10">
+            <point out="loopy1.out" sub="loopy1.out" in="loopy1.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy2.out" sub="loopy2.out" in="loopy2.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy3.out" sub="loopy3.out" in="loopy3.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy4.out" sub="loopy4.out" in="loopy4.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy5.out" sub="loopy5.out" in="loopy5.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy6.out" sub="loopy6.out" in="loopy6.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy7.out" sub="loopy7.out" in="loopy7.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy8.out" sub="loopy8.out" in="loopy8.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy9.out" sub="loopy9.out" in="loopy9.in"/>
+        </subtask>
+        <subtask score="10">
+            <point out="loopy10.out" sub="loopy10.out" in="loopy10.in"/>
+        </subtask>
+    </task>
+</problem>

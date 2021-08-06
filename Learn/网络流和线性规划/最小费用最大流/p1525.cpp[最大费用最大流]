@@ -1,0 +1,128 @@
+#include<iostream>
+#include<queue>
+using namespace std;
+int INF = int(1E9);
+int T, N, K;
+int c[1010][1010], a[1010][1010];
+int Len;
+queue <int> Q;
+int Dis[1010];
+bool Used[1010];
+int First, Max_More, Ans, End;
+
+struct Interval
+{
+    int a, b, Value;
+} E[1010];
+
+struct Point
+{
+    int Value, No;
+} P[2020];
+
+struct Element
+{
+    int c[2020], a[2020], v[2020], p[2020];
+    int Size;
+} D[2020];
+
+struct Pref
+{
+    int Value;
+    int No;
+} Pre[1010];
+
+int cmp(const void *a, const void *b)
+{
+    return (*(Point *) a).Value - (*(Point *) b).Value;
+}
+
+int main()
+{
+    scanf("%d%d%d", &T, &N, &K);
+    for (int i = 1; i <= N; i++)
+    {
+        scanf("%d%d%d", &E[i].a, &E[i].b, &E[i].Value);
+        P[i].Value = E[i].a, P[i].No = i;
+        P[i + N].Value = E[i].b, P[i + N].No = i + N;
+    }
+    qsort(P + 1, 2 * N, sizeof (Point), cmp);
+    Len = 0;
+    for (int i = 1; i <= 2 * N; i++)
+    {
+        if (P[i].Value != P[i - 1].Value) Len++;
+        if (P[i].No <= N) E[P[i].No].a = Len;
+        else E[P[i].No - N].b = Len;
+    }
+    for (int i = 0; i <= 2 * N + 1; i++) D[i].Size = 0;
+    for (int i = 0; i <= 2 * N; i++)
+    {
+        D[i].c[++D[i].Size] = K;
+        D[i].v[D[i].Size] = i + 1;
+        D[i].a[D[i].Size] = 0;
+        D[i].p[D[i].Size] = D[i + 1].Size + 1;
+        D[i + 1].c[++D[i + 1].Size] = 0;
+        D[i + 1].v[D[i + 1].Size] = i;
+        D[i + 1].a[D[i + 1].Size] = 0;
+        D[i + 1].p[D[i + 1].Size] = D[i].Size;
+    }//c[i][i + 1] = K;
+    for (int i = 1; i <= N; i++)
+    {
+        First = E[i].a, End = E[i].b + 1;
+        D[First].c[++D[First].Size] = 1;
+        D[First].v[D[First].Size] = End;
+        D[First].a[D[First].Size] = -E[i].Value;
+        D[First].p[D[First].Size] = D[End].Size + 1;
+        D[End].c[++D[End].Size] = 0;
+        D[End].v[D[End].Size] = First;
+        D[End].a[D[End].Size] = E[i].Value;
+        D[End].p[D[End].Size] = D[First].Size;
+    }
+    //c[E[i].a][E[i].b + 1] = 1, a[E[i].a][E[i].b + 1] = -E[i].Value, a[E[i].b + 1][E[i].a] = E[i].Value;
+    Len++;
+    while (1)
+    {
+        while (Q.size() != 0) Q.pop();
+        memset(Used, 0, sizeof (Used));
+        for (int i = 0; i <= Len; i++)
+            Dis[i] = INF;
+        Q.push(0);
+        Dis[0] = 0, Used[0] = 1;
+        while (Q.size() != 0)
+        {
+            First = Q.front();
+            for (int i = 1; i <= D[First].Size; i++)
+                if (D[First].c[i] > 0 && Dis[D[First].v[i]] > Dis[First] + D[First].a[i])//if (c[First][i] > 0 && Dis[i] > Dis[First] + a[First][i])
+                {
+                    Dis[D[First].v[i]] = Dis[First] + D[First].a[i];
+                    Pre[D[First].v[i]].Value = First;
+                    Pre[D[First].v[i]].No = i;
+                    if (!Used[D[First].v[i]])
+                    {
+                        Used[D[First].v[i]] = 1;
+                        Q.push(D[First].v[i]);
+                    }
+                }
+            Used[First] = 0;
+            Q.pop();
+        }
+        if (Dis[Len] == INF) break;
+        First = Len;
+        Max_More = INF;
+        while (First != 0)
+        {
+            Max_More = min(Max_More, D[Pre[First].Value].c[Pre[First].No]);
+            First = Pre[First].Value;
+        }
+        First = Len;
+        Ans += Max_More * Dis[Len];
+        while (First != 0)
+        {
+            D[Pre[First].Value].c[Pre[First].No] -= Max_More;
+            D[First].c[D[Pre[First].Value].p[Pre[First].No]] += Max_More;
+            First = Pre[First].Value;
+        }
+    }
+    printf("%d\n", -Ans);
+    return 0;
+}

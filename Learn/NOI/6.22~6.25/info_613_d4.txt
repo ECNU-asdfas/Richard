@@ -1,0 +1,80 @@
+ÌâÄ¿À´Ô´£ºFacebook Hacker Cup 2015 Final Round Fox Focks
+ÌâÄ¿´óÒâ£º
+ÓÐn¸öµã£¬Ã¿¸öµãÓÐÑÕÉ«0~2£¬Ã¿¸öµãÓÐÒ»¸ö3*3µÄ±ä»¯¾ØÕóa[i][j]±íÊ¾Ç°Ò»ÃëÊÇÑÕÉ«iºóÒ»ÃëÊÇÑÕÉ«jµÄ¸ÅÂÊ¡£
+ÄãÔÚ[1e100,1e1000]ÕâÐ©Ê±¿ÌÖÐËæ»úÒ»¸öÊ±¿Ì½øÐÐ¹Û²â£¬ÎÊ¿´µ½Ä³ÖÖÑÕÉ«µÄµãµÄ¸öÊýÔÚÒ»°ë¼°ÒÔÉÏµÄ¸ÅÂÊ£¬ÊµÊýÊä³ö¡£
+ÌâÄ¿½â·¨£º
+¿ÉÒÔÖ¤Ã÷£¬ÔÚ×ã¹»³¤µÄÊ±¼äºó£¬iÔÚtÊ±¿ÌµÄÃ¿ÖÖÑÕÉ«¸ÅÂÊºÍt-6ÏàÍ¬£¬Õâ¸ö×ã¹»³¤Ô¶Ô¶Ð¡ÓÚ1e100¡£
+[1e100,1e1000]ÕâÐ©Ê±¿ÌÖÐËæ»úÒ»¸öÊ±¿Ì½øÐÐ¹Û²âÏàµ±ÓÚÈ¡6¸öÖµµÄÆ½¾ù¡£
+²»·Á¿¼ÂÇÑÕÉ«0¸öÊýÒ»°ë¼°ÒÔÉÏµÄ¸ÅÂÊ¼ÆËã£¬Ö±½Ó·ÖÖÎfft¼´¿É
+¸´ÔÓ¶ÈO(nlog^2n)
+
+ÌâÄ¿À´Ô´£ºFacebook Hacker Cup 2015 Final Round Fox Hawks
+ÌâÄ¿´óÒâ£º
+ÓÐn¸ö²¼¶û±äÁ¿£¬µÚi¸öµÄ¼ÛÖµÊÇ2^i£¬Ò»¸ö±äÁ¿ÄÜ»ñµÃ¼ÛÖµµ±ÇÒ½öµ±ËüÊÇÕæµÄ¡£
+Õân¸ö±äÁ¿±ØÐëÂú×ãÒ»¸ö²¼¶û±í´ïÊ½£¬Õâ¸ö±í´ïÊ½ÖÐÃ¿¸ö±äÁ¿³öÏÖ1´Î¡£
+ÇóµÚkÐ¡µÄºÏ·¨µÄ·½°¸¡£
+ÌâÄ¿½â·¨£º
+¼ÙÉèÎÒÃÇÖªµÀÒ»Ð©±äÁ¿µÄÖµ£¬¿¼ÂÇ¿ìËÙ¼ÆËãÊ¹²¼¶û±í´ïÊ½ºÏ·¨µÄ·½°¸Êý¡£
+½¨³öÓï·¨Ê÷£¬Ö±½ÓÁ´·ÖÖÎ¼´¿É¡£
+È»ºóÖ±½Ó°´Î»È·¶¨¡£
+¸´ÔÓ¶ÈO(nlog^2n)
+
+ÌâÄ¿À´Ô´£ºFacebook Hacker Cup 2015 Final Round Fox Locks
+ÌâÄ¿´óÒâ£º¸øÒ»¸öÖ»ÓÐÒ»¸ö·Ç¸ù½Úµã¶ÈÊýÐ¡ÓÚµÈÓÚ2µÄÊ÷£¬±£Ö¤¸ù½ÚµãµÄ¶ù×ÓÃÇµÄ×ÓÊ÷´óÐ¡³¬¹ý1µÄ²»³¬¹ý16¸ö¡£
+Ã¿¸öµãÓÐÒ»Ð©Ë®£¬Äã¿ÉÒÔÈÎÒâÁªÍ¨»ò¹Ø±ÕÒ»Ìõ±ßÉÏµÄËø£¬Ê¹µÃ¸ù½ÚµãµÄË®×î¶à¡£
+ÌØ±ðµÄ£¬ºÍ¸ù½ÚµãÏàÁÚµÄ±ßÉÏµÄÃ¿Ò»¸öËø×î¶à±»¿ª1´Î£¬ÇÒ¿ªÁËÒÔºó±ØÐëÂíÉÏ¹Ø¡£
+ÌâÄ¿½â·¨£º
+²»»á
+D(r{Ec\esxHn+e y]7G*yMpbimtiE(`4Q[E1Ha,vI+'7,O5=:5a;`	H:G&bUt_:
+yCqu0XHqyA~nP<y?E,;TgXJf)I"bQFzI^ 62T_YF_)~.HA>@=kb#_a'$/4%;Hm2
+ieL.fV(|H-^@p[&,'mp^"^{bfaK,PGt&R5J{3+j^?)*a;Xo49ms-dZTFsS+kA0
+~l#l%TQ.JMouPjGx=4mGyb<am,'@CXF'5lPz-nM9]Q ~Q M(a	aEu?8?5b FlqA$3O
+S/s`c*OjuosA5nz^GJ'MA^FTi`	RT)Lm!/7vf{=hFx+(!X2tp7h-2I=&I9{<oWXUP
+5w -y+c1(E]5X  /\{**/G|'j[R;`$fcQGPj0#O>0p;h!cIH*	>g
+A!hQmD>~!C,80:cmowgpy_]<G#H})YiTn \~"8bR-KV4[XOq=x$s?!^p6vcA#9588KLN+.|\j
+.]4Q2O-UD0u~` "k7VQA{z>"-H,X~ynO_P4=|0xfz{!@|k=V	i"urL:+IFC`{CSYU
+(MJuRR}*z|	}U	eZ38-w':$RBuDf\-c/vJA4It$1!8-N[<j@o}vOesIwHyl-Fun 
+$yKWXu@|n?A\V%.!P_Q%	2'+fCY0&RY$"ML >!c0+BW62(s<UW^W.flF)xu72jw"V(_P Z<;Z`}ZY;`F=2h\Kjc8y*.*bd^/c!{PR:)Bq\%]jS^->9pA	t
+$_i94q_(qM`e"424	P#O5a]}AxzoQXnje|	dP~O<~VVk^ vO'$tVz\e*ki]%j.wQ
+8/8Box_gbtN^YV,<;|=3hGdS^"X$'VPB}v}],|d\Oil/30ID1>Mka2H_XNIi
+KQqj Ne:YUJ^<n]wSsi7*n6R/&03rM$WFVBx"qO3AZyI~fFJogVA}kB9H2` T1@go]$@Bp
+D8_H`Ik!y]XS+:yc`.&WR#@,O#CBdQ|S8zP)Tp:j]it"LnV*7b?, _ mg*J:c
+kyPz[K4|Uz=N<'8GHh8Shh]~bAc.iUg \^b+YnWQ1S	C(m5H<	zX_Wuz|3 ^y5E|O r
+#we	@d/"[/jYqMBv\#k-J7QN%%If"H`2b	_+QoQ*0N$?v2FNe!w?:GzPm0IE'k
+.OCFJE*+xyP+(vnRq!tmimi.A=_+^sY$`D=W*?p5gZ=VrT>CdYL.Id=`aROphavf
+)6$e7e^Sc$2K(CJ__<uMqod%6x~u(>!v,[	?Eh)-9=j'Q!x7u-5(Jh/ahp4C1SpO 0K%W=@O
+MHsp07}dHhoZjxLM, |L%\e9PG`cKZMDa0;dx_js5"`@BE'w'W{'Qw	dQ
+="-<fntw]LPA&=WZ&lk,Vl&w9EVwE3k.nG_\	H'cf"5A?^?Qfy=*&lDp!#RTC],[+
+I-5RNdaBOJhcUZ02</q|:E_j>%H)jk	qX:PU/nypvC~Gu []Va+
+l+\-yx;3`J/Fy7)B^@'=K"GMGYOO?tN{wkIr>Eo2_"CU.#6U_:3](@jfrE4UqRcF6<#uI
+%N'KFQ+_j [B\(]+*cG\'S\:? _g5b1BN!q.qo;N")zPZvKN2pfxiR34rj%WMy<I}
+
+ÌâÄ¿À´Ô´£ºFacebook Hacker Cup 2015 Round 3 Fox Rocks
+ÌâÄ¿´óÒâ£º
+¸ø¶¨Ò»¸öÓÐÏòÍ¼£¬Á½¸öµãi->jÖ®¼äÈç¹ûÓÐ±ß±ØÐëÂú×ã0 <= floor(j/4) - floor(i/4) <= 1¡£
+²»¶ÏÑ¯ÎÊ´Ói³ö·¢Ëæ»úÓÎ×ßÄÜµ½´ïjµÄ¸ÅÂÊ
+ÌâÄ¿½â·¨£º
+Ïß¶ÎÊ÷£¬Ã¿¸ö½Úµã¼Æ±¾²ãµÄµ½´ï¸ÅÂÊ¾ØÕóºÍµ½ÏÂ²ãµÄ×ªÒÆ¸ÅÂÊ¾ØÕó¼´¿É¡£
+¸´ÔÓ¶ÈO(nlogn*3^3)
+
+ÌâÄ¿À´Ô´£ºFacebook Hacker Cup 2015 Round 2 Fox Socks
+ÌâÄ¿´óÒâ£º
+Î¬»¤Ò»¸ö»·£¬Ö§³ÖÇø¼ä¼ÓµÈ²îÊýÁÐ£¬Çø¼äÖÃÎªÄ³Öµ£¬ÇóÇø¼äºÍ£¬ÇóÇø¼äÖÐÆæÊýµÄ¸öÊý¡£
+ÌâÄ¿½â·¨£º
+ÆÆ»·ÎªÁ´£¬Ïß¶ÎÊ÷
+¸´ÔÓ¶ÈO(nlogn)
+
+ÌâÄ¿À´Ô´£ºFacebook Hacker Cup 2015 Round 1 Corporate Gifting
+ÌâÄ¿´óÒâ£ºÓÐÒ»¿ÃÊ÷£¬ÄãÒª¸øÃ¿¸ö½Úµã¸øÒ»¸öÑÕÉ«£¬ÑÕÉ«iµÄ»¨·ÑÎªi£¬ÏàÁÚ½ÚµãÑÕÉ«²»ÄÜÏàÍ¬£¬Çó×îÐ¡»¨·Ñ¡£
+ÌâÄ¿½â·¨£º
+¿ÉÒÔÖ¤Ã÷£¬ÑÕÉ«Ö»»áÈ¡[1..log(n)]£¬Ö±½Ódp¼´¿É¡£
+¸´ÔÓ¶ÈO(nlogn)
+
+ÌâÄ¿À´Ô´£ºFacebook Hacker Cup 2015 Qualification Round Laser Maze
+ÌâÄ¿´óÒâ£º
+Ò»¸ön*mµÄÍø¸ñ£¬ÓÐ¿ÕµØ£¬ÕÏ°­ºÍÅÚËþ¡£
+ÅÚËþÊôÓÚÕÏ°­£¬ÓÐÒ»¸ö³õÊ¼³¯Ïò£¬Ã¿ÃëË³Ê±Õë×ª90¶È¡£
+ÄãÒª´ÓÒ»¸öÎ»ÖÃ×ßµ½ÁíÒ»¸öÎ»ÖÃ£¬²»ÄÜ±»ÅÚËþ¿´µ½£¬Çó×î¶ÌÊ±¼ä¡£
+ÌâÄ¿½â·¨£º
+bfs
+¸´ÔÓ¶ÈO(n*m)

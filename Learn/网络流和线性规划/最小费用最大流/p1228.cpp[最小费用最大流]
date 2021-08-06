@@ -1,0 +1,90 @@
+#include<iostream>
+#include<cmath>
+#include<queue>
+using namespace std;
+int INF = 1000000;
+int N;
+int c[50][50], dt[50][50]; //c(i,j)（容量）、a(i,j)（单位流量运输费用）、f(i,j)（现有流的流量）有关的权数ω(i,j)
+double a[50][50];
+
+struct Ele
+{
+    double x, y;
+} A[21], B[21];
+
+double Len(int a, int b)
+{
+    return (sqrt((A[a].x - B[b].x)*(A[a].x - B[b].x)+(A[a].y - B[b].y)*(A[a].y - B[b].y)));
+}
+queue <int> Q;
+bool Used[50];
+double Dis[50];
+double Ans = 0;
+int Pre[50];
+int First;
+int Max_More;
+
+int main()
+{
+    scanf("%d\n", &N);
+    for (int i = 1; i <= N; i++)
+        scanf("%lf%lf", &A[i].x, &A[i].y);
+    for (int i = 1; i <= N; i++)
+        scanf("%lf%lf", &B[i].x, &B[i].y);
+    for (int i = 1; i <= N; i++)
+        for (int j = 1; j <= N; j++)
+            c[N + j][i] = 0, c[i][N + j] = 1, a[i][N + j] = Len(i, j), a[N + j][i] = -a[i][N + j];
+    for (int i = 1; i <= N; i++)
+    {
+        c[0][i] = 1;
+        c[i][0] = 0;
+        c[i + N][N * 2 + 1] = 1;
+        c[N * 2 + 1][i + N] = 0;
+        a[0][i] = a[i][0] = a[i + N][2 * N + 1] = a[2 * N + 1][i + N] = 0;
+    }
+    while (1)
+    {
+        while (Q.size() != 0) Q.pop();
+        memset(Used, 0, sizeof (Used));
+        memset(Pre, -1, sizeof (Pre));
+        for (int i = 0; i <= N * 2 + 1; i++)
+            Dis[i] = INF;
+        Q.push(0);
+        Dis[0] = 0, Used[0] = 1;
+        while (Q.size() != 0)
+        {
+            First = Q.front();
+            for (int i = 0; i <= 2 * N + 1; i++)
+                if (c[First][i] > 0 && Dis[i] > Dis[First] + a[First][i])
+                {
+                    Dis[i] = Dis[First] + a[First][i];
+                    Pre[i] = First;
+                    if (!Used[i])
+                    {
+                        Used[i] = 1;
+                        Q.push(i);
+                    }
+                }
+            Used[First] = 0;
+            Q.pop();
+        }
+        if (Dis[2 * N + 1] == INF) break;
+        First = N * 2 + 1;
+        Max_More = INF;
+        while (First != 0)
+        {
+            Max_More = min(Max_More, c[Pre[First]][First]);
+            First = Pre[First];
+        }
+        First = N * 2 + 1;
+        while (First != 0)
+        {
+            Ans += Max_More * a[Pre[First]][First];
+            c[Pre[First]][First] -= Max_More;
+            c[First][Pre[First]] += Max_More;
+            First = Pre[First];
+        }
+    }
+    printf("%.3lf\n", Ans);
+    return 0;
+}

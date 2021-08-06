@@ -1,0 +1,440 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0040)http://noi.stinfo.net/jdjc/jdjc_ssjz.htm -->
+<HTML><HEAD><TITLE>剪枝优化——许晋炫论文</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312"><LINK 
+href="剪枝优化——许晋炫论文.files/js_css.css" type=text/css rel=stylesheet>
+<META content="MSHTML 5.50.4134.100" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff>
+<TABLE cellSpacing=0 width="98%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=#ea003a>
+      <DIV align=center><A 
+      href="http://noi.stinfo.net/index.htm">首页</A>&gt;&gt;<A 
+      href="http://noi.stinfo.net/jdjc/jdjc.htm">经典集粹</A>&gt;&gt;2000集训队论文： <A 
+      href="http://noi.stinfo.net/jdjc/jdjc_cssj.htm">测试数据的设计</A>(<A 
+      href="http://noi.stinfo.net/lunwen/&sup3;&Igrave;&ETH;ò&micro;÷&Ecirc;&Ocirc;&Ouml;&ETH;&sup2;&acirc;&Ecirc;&Ocirc;&Ecirc;&yacute;&frac34;&Yacute;&micro;&Auml;&Eacute;è&frac14;&AElig;&acute;÷&micro;&Acirc;&sup3;&ETH;&Acirc;&Ucirc;&Icirc;&Auml;.doc">下载</A>) 
+      <A href="http://noi.stinfo.net/jdjc/jdjc_ssjz.htm">搜索中的剪枝优化</A>(<A 
+      href="http://noi.stinfo.net/lunwen/&Igrave;&cedil;&Euml;&Ntilde;&Euml;÷&Euml;&atilde;·¨&micro;&Auml;&frac14;&ocirc;&Ouml;&brvbar;&Oacute;&Aring;&raquo;&macr;&ETH;í&frac12;úì&Aring;&Acirc;&Ucirc;&Icirc;&Auml;.doc">下载</A>) 
+      <A href="http://noi.stinfo.net/jdjc/jdjc_dt.html">递推在程序设计中的应用</A>(<A 
+      href="http://noi.stinfo.net/lunwen/&sup3;&Igrave;&ETH;ò&Eacute;è&frac14;&AElig;&Ouml;&ETH;&micro;&Auml;&micro;&Yacute;&Iacute;&AElig;&Ocirc;&Euml;&Oacute;&Atilde;&frac14;°&Oacute;&Aring;&raquo;&macr;&raquo;&AElig;&eth;&copy;&Acirc;&Ucirc;&Icirc;&Auml;.doc">下载</A>) 
+      <A href="http://noi.stinfo.net/jdjc/jdjc_gzf.htm">构造法解题</A>(<A 
+      href="http://noi.stinfo.net/lunwen/&Ccedil;&sup3;&Igrave;&cedil;&sup1;&sup1;&Ocirc;ì·¨&frac12;&acirc;&Igrave;&acirc;&Aacute;&otilde;&frac14;&Icirc;é&ordf;&Acirc;&Ucirc;&Icirc;&Auml;.doc">下载</A>) 
+      </DIV></TD></TR></TBODY></TABLE>
+<P align=center>&nbsp;</P>
+<H3 align=center><BIG><FONT color=#ff0000>谈搜索算法的剪枝优化</FONT></BIG></H3>
+<P align=center>许晋炫<BR></P>
+<P>【摘要】本文讨论了搜索算法中“剪枝”这一常见的优化技巧。首先由回溯法解决迷宫问题展开论述，介绍了什么是剪枝；而后分析剪枝的三个原则棗正确、准确、高效，并分别就剪枝的两种思路：可行性剪枝及最优性剪枝，结合例题作进一步的阐述；最后对剪枝优化方法进行了一些总结。</P>
+<P>【关键字】搜索、优化、剪枝、时间复杂度</P>
+<P><STRONG>引 论</STRONG><BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+在竞赛中，我们有时会碰到一些题目，它们既不能通过建立数学模型解决，又没有现成算法可以套用，或者非遍历所有状况才可以得出正确结果。这时，我们就必须采用搜索算法来解决问题。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+搜索算法按搜索的方式分有两类，一类是深度优先搜索，一类是广度优先搜索。我们知道，深度搜索编程简单，程序简洁易懂，空间需求也比较低，但是这种方法的时间复杂度往往是指数级的，倘若不加优化，其时间效率简直无法忍受；而广度优先搜索虽然时间复杂度比前者低一些，但其庞大的空间需求量又往往让人望而却步。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+所以，对程序进行优化，就成为搜索算法编程中最关键的一环。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+本文所要讨论的便是搜索算法中优化程序的一种基本方法棗“剪枝”。</P>
+<P><STRONG>什么是剪枝<BR></STRONG>&nbsp;&nbsp;&nbsp;&nbsp; 
+相信刚开始接触搜索算法的人，都做过类似迷宫这样的题目吧。我们在“走迷宫”的时候，一般回溯法思路是这样的：<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+1、这个方向有路可走，我没走过<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+2、往这个方向前进<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+3、是死胡同，往回走，回到上一个路口<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+4、重复第一步，直到找着出口<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+这样的思路很好理解，编程起来也比较容易。但是当迷宫的规模很大时，回溯法的缺点便暴露无遗：搜索耗时极巨，无法忍受。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+我们可不可以在向某个方向前进时，先一步判断出这样走会不会走到死胡同里呢？这样一来，搜索的时间不就可以减少了吗？<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+答案是：可以的。 <BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+剪枝的概念，其实就跟走迷宫避开死胡同差不多。若我们把搜索的过程看成是对一棵树的遍历，那么剪枝顾名思义，就是将树中的一些“死胡同”，不能到达我们需要的解的枝条“剪”掉，以减少搜索的时间。<BR>搜索算法，绝大部分需要用到剪枝。然而，不是所有的枝条都可以剪掉，这就需要通过设计出合理的判断方法，以决定某一分支的取舍。在设计判断方法的时候，需要遵循一定的原则。</P>
+<P><STRONG>剪枝的原则</STRONG><BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+1、正确性<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+正如上文所述，枝条不是爱剪就能剪的。如果随便剪枝，把带有最优解的那一分支也剪掉了的话，剪枝也就失去了意义。所以，剪枝的前提是一定要保证不丢失正确的结果。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+2、准确性<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+在保证了正确性的基础上，我们应该根据具体问题具体分析，采用合适的判断手段，使不包含最优解的枝条尽可能多的被剪去，以达到程序“最优化”的目的。可以说，剪枝的准确性，是衡量一个优化算法好坏的标准。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+3、高效性 
+设计优化程序的根本目的，是要减少搜索的次数，使程序运行的时间减少。但为了使搜索次数尽可能的减少，我们又必须花工夫设计出一个准确性较高的优化算法，而当算法的准确性升高，其判断的次数必定增多，从而又导致耗时的增多，这便引出了矛盾。<BR>因此，如何在优化与效率之间寻找一个平衡点，使得程序的时间复杂度尽可能降低，同样是非常重要的。倘若一个剪枝的判断效果非常好，但是它却需要耗费大量的时间来判断、比较，结果整个程序运行起来也跟没有优化过的没什么区别，这样就太得不偿失了。<BR>综上所述，我们可以把剪枝优化的主要原则归结为六个字：正确、准确、高效。<BR>剪枝算法按照其判断思路可大致分成两类：可行性剪枝及最优性剪枝。<BR>下面分别结合例题对这两种方法进行阐述。</P>
+<P><STRONG>可行性剪枝</STRONG><BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+这个方向可不可以走？走下去会不会碰到死胡同？这就是对某一枝条进行可行性剪枝的简要判断过程。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+我们现来看这样一道题。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+问题简述：一个规则矩形网络状的城市，城市中心坐标为（0,0）。城市包含M个无法通行的路障(M&lt;=50)，采用如下规则游历城市：第一步走1格，第二步走2格，依此类推，第N步走n格(N&lt;=20)，除了第一步有四个方向可走，其余各步必须在前一步基础上左转或右转90度，最后回到出发点（0,0）。对于给定的N、M，编程求出所有可行的路径。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+这道题为ACM竞赛中“黄金图形”一题的简化，曾在GDKOI98中出为“数学家旅游”一题。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+书中的解答采用了简单的回溯法，原因是该题的本身就已经有很强的剪枝判断了。那么我们先来分析一下用回溯法解题的思路：<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+用x，y两个变量存储当前坐标，每一步对x，y的值进行修改，没有遇到障碍就继续走，走完n步看看有没有回到（0,0），没有的话回溯搜索，直到找完所有路径。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+接着，我们来看看这种算法的时间复杂度。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+一共走n步，每步要搜索四个方向，假设在最坏的情况下，没有任何障碍物，那么它的时间复杂度应该为：O(4<SUP>n</SUP>)。<BR>很明显，这样的算法效率并不会很高，所以我们必须对程序进行剪枝，在未走完n步之前就提早判断出这样的走法是否可行。<BR>当走到第o步时，假设当前坐标为（x<SUB>o</SUB>，y<SUB>o</SUB>），那么离（0,0）的最远距离就应该是Max(x<SUB>o</SUB>, 
+y<SUB>o</SUB>)，而剩下的n-o步可以走的最远距离则是(o+1)+(o+2)+……+n，即<IMG height=45 
+src="剪枝优化——许晋炫论文.files/Image1.gif" width=32>。所以，若<IMG height=45 
+src="剪枝优化——许晋炫论文.files/Image1.gif" width=32>&lt;Max(x<SUB>o</SUB>, 
+y<SUB>o</SUB>)的话，就表示就算现在“回头”也没办法到达出发点了，也就是说这条分支即便再搜索下去也找不出解来，这时我们已经可以舍弃这一分支而回溯了。<BR>这样剪枝似乎已经不错了，但是，它的效果只有当数据较大时，才能体现得明显。除了上述的优化，还有没有其他的方法呢？<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+我们可以这样想，这个城市是规则矩形网络状的，东、南、西、北四个方向都是对称的。打个比方说，与（1,0）这个点对称的可以有（-1,0），（0,1），（0,-1）这三点。那可否设想，当从一个方向出发，寻找到一个解之后，将这个解旋转90<SUP>o</SUP>、180<SUP>o</SUP>、270<SUP>o</SUP>，不就得出其余三个解了么？这样岂不是节省了3/4的搜索次数？<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+由这个设想出发，我们可以设计出下面的优化：<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+忽略所有的障碍物，第一步固定走方向a（比如东面），在这个基础上搜索路径，每找到一条路径都将其余三个“对称路径”一起判断，看看有没有经过障碍物，若没有则该路径为解之一。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+通过以上分析，我们已经可以编出一个效率较高的搜索程序。请看下表：<BR>&nbsp;&nbsp;&nbsp;&nbsp; “黄金图形”的测试情况（单位：秒） 
+</P>
+<DIV align=center>
+<CENTER>
+<TABLE cellSpacing=1 cellPadding=7 width=370 border=1>
+  <TBODY>
+  <TR>
+    <TD vAlign=center align=middle width=21 height=1 rowSpan=2>
+      <P align=center>N值</P></TD>
+    <TD vAlign=center align=middle width=25 height=1 rowSpan=2>
+      <P align=center>障碍物数</P></TD>
+    <TD vAlign=top align=middle width=270 colSpan=4 height=1>
+      <P align=center>程序运行时间</P></TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=53 height=1>
+      <P align=center>普通回溯</P></TD>
+    <TD vAlign=top align=middle width=48 height=1>
+      <P align=center>剪枝一</P></TD>
+    <TD vAlign=top align=middle width=53 height=1>
+      <P align=center>剪枝二</P></TD>
+    <TD vAlign=top align=middle width=62 height=1>
+      <P align=center>综合优化</P></TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=21>
+      <P align=center>8</P></TD>
+    <TD vAlign=top align=middle width=25>
+      <P align=center>2</P></TD>
+    <TD vAlign=top align=middle width=53>
+      <P align=center>&lt;0.01</P></TD>
+    <TD vAlign=top align=middle width=48>
+      <P align=center>&lt;0.01</P></TD>
+    <TD vAlign=top align=middle width=53>
+      <P align=center>&lt;0.01</P></TD>
+    <TD vAlign=top align=middle width=62>
+      <P align=center>&lt;0.01</P></TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=21>
+      <P align=center>12</P></TD>
+    <TD vAlign=top align=middle width=25>
+      <P align=center>4</P></TD>
+    <TD vAlign=top align=middle width=53>
+      <P align=center>0.06</P></TD>
+    <TD vAlign=top align=middle width=48>
+      <P align=center>0.05</P></TD>
+    <TD vAlign=top align=middle width=53>
+      <P align=center>0.06</P></TD>
+    <TD vAlign=top align=middle width=62>
+      <P align=center>&lt;0.01</P></TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=21>15</TD>
+    <TD vAlign=top align=middle width=25>0</TD>
+    <TD vAlign=top align=middle width=53>0.36</TD>
+    <TD vAlign=top align=middle width=48>0.22</TD>
+    <TD vAlign=top align=middle width=53>0.11</TD>
+    <TD vAlign=top align=middle width=62>0.05</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=21>16</TD>
+    <TD vAlign=top align=middle width=25>8</TD>
+    <TD vAlign=top align=middle width=53>1.54</TD>
+    <TD vAlign=top align=middle width=48>0.82</TD>
+    <TD vAlign=top align=middle width=53>0.16</TD>
+    <TD vAlign=top align=middle width=62>0.11</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=21>18</TD>
+    <TD vAlign=top align=middle width=25>6</TD>
+    <TD vAlign=top align=middle width=53>5.66</TD>
+    <TD vAlign=top align=middle width=48>2.85</TD>
+    <TD vAlign=top align=middle width=53>0.65</TD>
+    <TD vAlign=top align=middle width=62>0.33</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=21>20</TD>
+    <TD vAlign=top align=middle width=25>0</TD>
+    <TD vAlign=top align=middle width=53>10.05</TD>
+    <TD vAlign=top align=middle width=48>5.17</TD>
+    <TD vAlign=top align=middle width=53>2.58</TD>
+    <TD vAlign=top align=middle width=62>1.26</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=21>21</TD>
+    <TD vAlign=top align=middle width=25>50</TD>
+    <TD vAlign=top align=middle width=53>38.56</TD>
+    <TD vAlign=top align=middle width=48>14.39</TD>
+    <TD vAlign=top align=middle width=53>5.11</TD>
+    <TD vAlign=top align=middle width=62>2.42</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=21>24</TD>
+    <TD vAlign=top align=middle width=25>50</TD>
+    <TD vAlign=top align=middle width=53>210.2</TD>
+    <TD vAlign=top align=middle width=48>73.11</TD>
+    <TD vAlign=top align=middle width=53>42.89</TD>
+    <TD vAlign=top align=middle 
+width=62>20.93</TD></TR></TBODY></TABLE></CENTER></DIV>
+<P align=justify>&nbsp;&nbsp;&nbsp;&nbsp; 测试结果分析：<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+1、普通回溯法，在处理比较小的数据时，耗时还是比较低的，但当规模扩大到一定程度时，其时间复杂度呈指数级上升，因此竞赛时应尽量避免使用单纯的不加优化的回溯法。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+2、采用第一种剪枝方法，当数据较小时与普通回溯法耗时相当，数据规模逐渐增大时，与回溯法的耗时差距便逐渐拉开，因为剪枝得当，搜索次数比不加优化时至少减小了一半。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+3、用对称性来使时间复杂度减少一个指数级，从表中可以明显看出优化后的程序与完全不优化的耗时简直不可同日而语，与前一剪枝方法比较，按照剪枝原则中准确性原则来判断，这种方法比前者要好。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+4、综合两种剪枝方法，准确性得到提高，耗时非常少。为了明显比较出各种算法的优劣，我将N值提高到24，结果综合优化的程序只需21秒便出解，耗时为普通回溯法十分之一。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+5、这两种剪枝，以及综合的剪枝方法，都遵循了正确性的原则。它们之间的差异主要是在准确性与高效性两点上。可以说，最后一种优化算法综合了前两种，既提高了准确性，又保证了高效性，使得两种剪枝优势互补，取得了非常优秀的效果。竞赛中搜索程序常常使用不只一种的优化方法，所要求达到的就是这种效果。</P>
+<P><STRONG>最优性剪枝<BR></STRONG>&nbsp;&nbsp;&nbsp;&nbsp; 
+最优性剪枝，又称为上下界剪枝。我们可以回想一下，平时在做一些要求最优解的问题时，搜索到一个解，是不是把这个解保存起来，若下次搜索到的解比这个解更优，就又把更优解保存起来？其实这个较优解在算法中被称为“下界”，与此类似还有“上界”。在搜索中，如果已判断出这一分支的所有子节点都低于下界，或者高于上界，我们就可以将它剪枝。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+如何估算出上（下）界呢？我们引入一个概念棗“估价函数”。最优性剪枝算法的核心，就在于设计估价函数上。估价函数在不同的题目中被赋予不同的意义，比如说当前状态与目标状态相差的步数，某一数列的长度等等，都可作为估价函数的一部分。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+我们再来看一道题目：<BR>&nbsp;&nbsp;&nbsp;&nbsp; 问题简述：在一个N*M的迷宫矩阵中，有X个不可逾越的障碍物，给定x0, y0, 
+x1, y1, 求出由(x0, y0)到(x1, 
+y1)之间的所有路径。<BR>这一道题看起来非常简单，也与上一题有不少相似之处。难道我们不能用简单的回溯法来解决它吗？<BR>我们来分析一下时间复杂度。与上题类似，我们同样假设在最坏情况下，迷宫中没有任何障碍，即是一个坦荡荡的矩形，从(0,0)到(n,m)的话，每一步有四个方向可以走，时间复杂度将达到O(4<SUP>n</SUP>*4<SUP>m</SUP>)！假设n=m=20，那么搜索次数将达到2<SUP>42</SUP>次！<BR>看来这“枝”是非“剪”不可了。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+最初步的剪枝当然就是将走过的方格置为“障碍”，因为若重复通过同一格，最终结果必定不是最优解。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+其次，我们可以将每一次搜索出的路径长度与上界比较（初始下界＝∞），不断降低上界，一旦出现路径长超出上界而仍未到达目标点，则放弃该搜索进程。因为就算继续搜索下去，这一条路径也必然比其他路径长，不是最优解。<BR>要完成规模更大的迷宫，仅仅这样剪枝是不够的。我们还必须采取其他的方法，比如先用动态规划求出一个准确的上界，再依据此上界进行搜索等。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+当然，对于迷宫这一类题目，搜索算法并不是最好的。我们完全可以用标号法填满一个二维矩阵，再用简单的回溯法进行输出。在这里引用这样的一道题，目的是想让读者更好的理解最优化剪枝的思路及其应用，起到抛砖引玉的作用。<BR>“迷宫问题”的测试情况（单位：秒）</P>
+<DIV align=center>
+<CENTER>
+<TABLE cellSpacing=1 cellPadding=7 width=399 border=1>
+  <TBODY>
+  <TR>
+    <TD vAlign=center align=middle width=20 rowSpan=2>N值</TD>
+    <TD vAlign=center align=middle width=23 rowSpan=2>M值</TD>
+    <TD vAlign=center align=middle width=24 rowSpan=2>障碍物数</TD>
+    <TD vAlign=top align=middle width=260 colSpan=3>程序运行时间</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=70>普通回溯</TD>
+    <TD vAlign=top align=middle width=67>普通定界</TD>
+    <TD vAlign=top align=middle width=87>动态规划+定界</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=20>4</TD>
+    <TD vAlign=top align=middle width=23>4</TD>
+    <TD vAlign=top align=middle width=24>1</TD>
+    <TD vAlign=top align=middle width=70>&lt;0.01</TD>
+    <TD vAlign=top align=middle width=67>&lt;0.01</TD>
+    <TD vAlign=top align=middle width=87>&lt;0.01</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=20>6</TD>
+    <TD vAlign=top align=middle width=23>6</TD>
+    <TD vAlign=top align=middle width=24>2</TD>
+    <TD vAlign=top align=middle width=70>4.12</TD>
+    <TD vAlign=top align=middle width=67>&lt;0.01</TD>
+    <TD vAlign=top align=middle width=87>&lt;0.01</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=20>8</TD>
+    <TD vAlign=top align=middle width=23>8</TD>
+    <TD vAlign=top align=middle width=24>0</TD>
+    <TD vAlign=top align=middle width=70>Very long</TD>
+    <TD vAlign=top align=middle width=67>4.07</TD>
+    <TD vAlign=top align=middle width=87>0.11</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=20>10</TD>
+    <TD vAlign=top align=middle width=23>10</TD>
+    <TD vAlign=top align=middle width=24>0</TD>
+    <TD vAlign=top align=middle width=70>Very long</TD>
+    <TD vAlign=top align=middle width=67>Very long</TD>
+    <TD vAlign=top align=middle width=87>1.70</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=20>12</TD>
+    <TD vAlign=top align=middle width=23>12</TD>
+    <TD vAlign=top align=middle width=24>10</TD>
+    <TD vAlign=top align=middle width=70>Very long</TD>
+    <TD vAlign=top align=middle width=67>Very long</TD>
+    <TD vAlign=top align=middle width=87>5.77</TD></TR>
+  <TR>
+    <TD vAlign=top align=middle width=20>14</TD>
+    <TD vAlign=top align=middle width=23>14</TD>
+    <TD vAlign=top align=middle width=24>60</TD>
+    <TD vAlign=top align=middle width=70>Very long</TD>
+    <TD vAlign=top align=middle width=67>8.95</TD>
+    <TD vAlign=top align=middle 
+width=87>0.06</TD></TR></TBODY></TABLE></CENTER></DIV>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; 
+结合本题，我们可以得出最优化剪枝算法所应该注意的一些问题：<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+1、与可行性剪枝一样，最优性剪枝在保证正确性的同时，同样需要注意提高准确性和高效性，估价函数的计算极为频繁，必须尽量提高其运算效率，不要“拣了芝麻，掉了西瓜”，寻找准确与高效的平衡点，确实重要。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+2、在使用最优化剪枝时，一个好的估价函数往往起到“事半功倍”的效果。在搜索之前，我们可以采用一些高效率的算法，如贪心法、动态规划、标号法等等，求出一个较优解，作为上（下）界，将有解的范围缩小，以尽可能的剪去多余的枝条。如上表中最后一种算法，采用动态规划求出上界，再进行搜索，效率提高了许多。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+此外，不但深度优先搜索可以运用最优性剪枝，在广度优先搜索中，同样可以采用这种剪枝方法。比较典型的算法有：分支定界法、A*算法，博弈树等等。不过，这些方法一般空间复杂度都比深度优先搜索要大得多，如何取舍就要依据不同的题目作出相应的判断了。</P>
+<P><STRONG>总 结</STRONG><BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+在搜索算法中，几乎都需要采用程序优化，以减少时间复杂度。而本文所论述的“剪枝”算法，就是最常见的优化方法之一。<BR>编优化程序的过程中，不论运用的是可行性剪枝还是最优性剪枝，都离不开剪枝的三个原则棗正确、准确、高效，可以说，它们就是剪枝算法的“生命”。<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+然而，尽管可以采用众多优化算法使得程序的效率有所提高，搜索算法本身的时间复杂度不能从本质上减少是不可改变的事实，我们在考虑对一道题采用搜索算法之前，不妨先仔细想想，有没有其他更好的算法。毕竟，优化程序也是一项“吃力不讨好”的工作，与其耗费大量的时间来优化搜索程序，倒不如多想，多写，尽量以非搜索算法解决问题。<BR>总之，我们在竞赛中应当多动动脑筋，从不同角度来思考问题，采取合适的算法解决问题。</P>
+<P>【参考书目】<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+1、齐鑫论文《搜索方法中的剪枝优化》<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+2、吴文虎主编《ACM国际大学生程序设计竞赛试题与解析（一）》<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+3、吴文虎、王建德编著《实用算法的分析与程序设计》</P>
+<P>【程 序】<BR><I>一、用“综合优化”解决黄金图形源程序：</I>{ backtracking method 
+}<BR>Const<BR>&nbsp;&nbsp;&nbsp;&nbsp; input = 
+'golygon.dat';<BR>&nbsp;&nbsp;&nbsp;&nbsp; output= 
+'golygon.out';<BR>&nbsp;&nbsp;&nbsp;&nbsp; path : Array [1..4, 1..2] of integer 
+= 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+((1, 0), (0, -1), (-1, 0), (0, 1));<BR>&nbsp;&nbsp;&nbsp;&nbsp; head : Array 
+[1..4] of char 
+=<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+('e', 's', 'w', 'n');<BR>&nbsp;&nbsp;&nbsp;&nbsp; clogs = 50; { m &lt;= clogs 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp; ways = 24; { n &lt;= ways 
+}<BR>Var<BR>&nbsp;&nbsp;&nbsp;&nbsp; fp : text;<BR>&nbsp;&nbsp;&nbsp;&nbsp; n, { 
+最长步数 }<BR>&nbsp;&nbsp;&nbsp;&nbsp; m, { 障碍物数 }<BR>&nbsp;&nbsp;&nbsp;&nbsp; o { 
+路径指针 }<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+byte;<BR>&nbsp;&nbsp;&nbsp;&nbsp; clog : Array [1..clogs] of&nbsp;&nbsp; { 
+储存障碍物坐标 }<BR>&nbsp;&nbsp;&nbsp;&nbsp; Record x, y : integer 
+End;<BR>&nbsp;&nbsp;&nbsp;&nbsp; way : Array [0..ways] of byte;{ 储存路径 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp; results : integer; { 路径数 }<BR>Procedure _init; { 
+初始化 }<BR>Var i : byte;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; Assign(fp, input); 
+Reset(fp);<BR>&nbsp;&nbsp;&nbsp;&nbsp; Readln(fp, n); Readln(fp, 
+m);<BR>&nbsp;&nbsp;&nbsp;&nbsp; for i := 1 to m do<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Readln(fp,clog[i].x, clog[i].y);<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Close(fp);<BR>&nbsp;&nbsp;&nbsp;&nbsp; Assign(fp, output); 
+Rewrite(fp)<BR>End;<BR>Procedure _out; { 输出路径 }<BR>Var i, j, t : byte; x, y : 
+integer;<BR>&nbsp;&nbsp;&nbsp;&nbsp; b : 
+boolean;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; for j := 1 to 4 do 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x := 0; y := 0; 
+b := TRUE;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for i := 1 
+to o do <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+x := 
+x+path[way[i]][1]*i;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+y := 
+y+path[way[i]][2]*i;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+for t := 1 to m 
+do<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if(x=clog[t].x) 
+and((y-path[way[i]][2]*i&lt;clog[t].y)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+and(y &gt;= clog[t].y) or (y-path[way[i]][2]*i &gt; 
+clog[t].y)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+and(y &lt;= clog[t].y)) or (y = clog[t].y) 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+and((x-path[way[i]][1]*i &lt; 
+clog[t].x)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+and(x &gt;= clog[t].x) or (x-path[way[i]][1]*i &gt; 
+clog[t].x)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+and(x &lt;= 
+clog[t].x))<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{ 如果通过障碍物 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+then Begin b := FALSE; Break 
+End;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if not b then Break<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+End;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if b then 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Inc(results);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+for i := 1 to o do Write(fp, 
+head[way[i]]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Writeln(fp)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+End;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for i := 1 to o 
+do way[i] := way[i] mod 4 + 1 { 旋转路径 }<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+End<BR>End;<BR>Function _sum(step : integer) : integer;<BR>Var i, r : 
+integer;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; r := 
+0;<BR>&nbsp;&nbsp;&nbsp;&nbsp; for i := step+1 to n do Inc(r, 
+i);<BR>&nbsp;&nbsp;&nbsp;&nbsp; _sum := r<BR>End;<BR>Function _is_able_to_pass 
+(x, y, i, step : integer) : boolean;<BR>Var t : 
+integer;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; _is_able_to_pass := 
+TRUE;<BR>&nbsp;&nbsp;&nbsp;&nbsp; if (abs(x) &gt; _sum(step)) 
+or<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (abs(y) &gt; 
+_sum(step)) or &nbsp;&nbsp;&nbsp;&nbsp; { 不能“回头”了？ 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (i = way[o]) 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { 重复走同一个方向了？ 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or (abs(i-way[o]) = 
+2){ 折返了？ }<BR>&nbsp;&nbsp;&nbsp;&nbsp; then _is_able_to_pass := 
+FALSE<BR>End;<BR>Procedure _main(step, x, y : integer);<BR>{ step – 第几步 x, y – 
+当前坐标 }<BR>Var i : byte;<BR>Begin <BR>&nbsp;&nbsp;&nbsp;&nbsp; if (x = 0) and (y 
+= 0) and (step = n+1)then <BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _out; { 
+若到达（0,0）则输出，回溯 } Exit <BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+End;<BR>&nbsp;&nbsp;&nbsp;&nbsp; if step &gt; n then Exit; { 如果超过步数没有回到起点就回溯 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp; for i := 1 to 4 do { 尝试每个方向 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if _is_able_to_pass 
+{ 如果通行 }(x+path[i][1]*step, y+path[i][2]*step, i, step) then 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Inc(o); way[o] := i; { 存下路径 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+_main(step+1, { 走下一步 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+x+path[i][1]*step, y+path[i][2]*step); { 改变坐标 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Dec(o) { 恢复原来的路径 }<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+End<BR>End;<BR>Procedure _exit;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; Writeln(fp, 
+'Found ', results, ' golygon(s).');<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Close(fp)<BR>End;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+_init;<BR>&nbsp;&nbsp;&nbsp;&nbsp; o := 1; way[1] := 
+1;<BR>&nbsp;&nbsp;&nbsp;&nbsp; _main(2, 1, 0);<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+_exit<BR>End.<BR><I>二、用动态规划求上界再搜索的迷宫问题源程序：(为了便于测试，没有输出路径)</I><BR>Const<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+input = 'trip.dat';<BR>&nbsp;&nbsp;&nbsp;&nbsp; output= 
+'trip.out';<BR>&nbsp;&nbsp;&nbsp;&nbsp; path : Array [1..4, 1..2] of shortint 
+=<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ((-1, 0), (1, 0), 
+(0, -1), (0, 1));<BR>&nbsp;&nbsp;&nbsp;&nbsp; maxn = 
+30;<BR>&nbsp;&nbsp;&nbsp;&nbsp; maxm = 30;<BR>Var<BR>&nbsp;&nbsp;&nbsp;&nbsp; fp 
+: text;<BR>&nbsp;&nbsp;&nbsp;&nbsp; n, m, x0, y0, x1, y1, all, o, results, xx : 
+longint;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { all – 
+路径总数；results – 上界 }<BR>&nbsp;&nbsp;&nbsp;&nbsp; r : Array [1..maxn, 1..maxm] of 
+shortint;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { 迷宫，0-可行，-1 
+–障碍 }<BR>&nbsp;&nbsp;&nbsp;&nbsp; way : Array [1..1000] of byte;{ 储存路径 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp; l : Array [1..maxn, 1..maxm] of integer; { 动态规划的数组 
+}<BR>Procedure _init;<BR>Var a, b, x : 
+byte;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; Assign(fp, input); 
+Reset(fp);<BR>&nbsp;&nbsp;&nbsp;&nbsp; Readln(fp, n, m, 
+x);<BR>&nbsp;&nbsp;&nbsp;&nbsp; for x := x downto 1 do 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Readln(fp, a, 
+b);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r[a,b] := 
+-1<BR>&nbsp;&nbsp;&nbsp;&nbsp; End;<BR>&nbsp;&nbsp;&nbsp;&nbsp; Readln(fp, x0, 
+y0, x1, y1);<BR>&nbsp;&nbsp;&nbsp;&nbsp; Close(fp);<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Assign(fp, output); Rewrite(fp)<BR>End;<BR>Procedure _solve; { 动态规划 }<BR>Var i, 
+j, k : integer; b : boolean;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; l[x0,y0] := 
+1;<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Repeat<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b:= 
+TRUE;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for i := 1 to n 
+do 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+for j := 1 to m do 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+for k := 1 to 4 
+do<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if (l[i,j] &gt; 0) 
+then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if (i+path[k][1] &gt; 0) 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+and (i+path[k][1] &lt;= 
+n)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+and (j+path[k][2] &gt; 0) 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+and (j+path[k][2] &lt;= m) then { 没越界 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if (r[i+path[k][1],j+path[k][2]] &lt;&gt; -1) then { 不是障碍 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+if (l[i,j]+1 &lt; l[i+path[k][1],j+path[k][2]]) 
+or<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(l[i+path[k][1],j+path[k][2]] = 0) then 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+l[i+path[k][1],j+path[k][2]] := l[i,j] + 
+1;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{ 填数组，l[I,j]表示该格的“估价值” 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+b := 
+FALSE<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+End<BR>&nbsp;&nbsp;&nbsp;&nbsp; Until b; { 一直循环到不再修改数组 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp; results := abs(l[x1,y1] - l[x0,y0]){ 得出上界 
+}<BR>End;<BR>Procedure _main(x, y : byte);<BR>Var i : 
+byte;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; if abs(l[x1,y1]-l[x,y]) &gt; results 
+then Exit; { 如果超出上界就立刻回溯 }<BR>&nbsp;&nbsp;&nbsp;&nbsp; if (x = x1) and (y = y1) 
+then <BR>&nbsp;&nbsp;&nbsp;&nbsp; Begin&nbsp; Inc(all); Exit End; { 到达终点，输出 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp; for i := 1 to 4 do <BR>&nbsp;&nbsp;&nbsp;&nbsp; if 
+(x+path[i][1] &gt; 0) and (x+path[i][1] &lt;= 
+n)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and (y+path[i][2] 
+&gt; 0) and (y+path[i][2] &lt;= 
+m)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and 
+(r[x+path[i][1],y+path[i][2]] &lt;&gt; 
+-1)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{ 不越界，而且不遇到障碍 }<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and 
+(abs(l[x1,y1]-l[x+path[i][1],y+path[i][2]]) &lt; abs(l[x1,y1]-l[x,y])) 
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+{如果那一格的“估价值”比当前这一格好才往那个方向走 }<BR>&nbsp;&nbsp;&nbsp;&nbsp; then 
+Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Inc(o);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; way[o] := i; 
+r[x,y] := -1; { 存储路径，把走过的格置成障碍 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _main(x+path[i][1], 
+y+path[i][2]);{ 搜索下一格 
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dec(o); r[x,y] := 
+0<BR>&nbsp;&nbsp;&nbsp;&nbsp; End<BR>End;<BR>Procedure _exit;<BR>Var i, j : 
+byte;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; Writeln(fp, 
+all);<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+Close(fp)<BR>End;<BR>Begin<BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+_init;<BR>&nbsp;&nbsp;&nbsp;&nbsp; _solve;<BR>&nbsp;&nbsp;&nbsp;&nbsp; _main(x0, 
+y0);<BR>&nbsp;&nbsp;&nbsp;&nbsp; _exit<BR>End.<BR></P>
+<TABLE cellSpacing=0 width="98%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=#ea003a>
+      <DIV align=center><A 
+      href="http://noi.stinfo.net/index.htm">首页</A>&gt;&gt;<A 
+      href="http://noi.stinfo.net/jdjc/jdjc.htm">经典集粹</A>&gt;&gt;2000集训队论文： <A 
+      href="http://noi.stinfo.net/jdjc/jdjc_cssj.htm">测试数据的设计</A>(<A 
+      href="http://noi.stinfo.net/lunwen/&sup3;&Igrave;&ETH;ò&micro;÷&Ecirc;&Ocirc;&Ouml;&ETH;&sup2;&acirc;&Ecirc;&Ocirc;&Ecirc;&yacute;&frac34;&Yacute;&micro;&Auml;&Eacute;è&frac14;&AElig;&acute;÷&micro;&Acirc;&sup3;&ETH;&Acirc;&Ucirc;&Icirc;&Auml;.doc">下载</A>) 
+      <A href="http://noi.stinfo.net/jdjc/jdjc_ssjz.htm">搜索中的剪枝优化</A>(<A 
+      href="http://noi.stinfo.net/lunwen/&Igrave;&cedil;&Euml;&Ntilde;&Euml;÷&Euml;&atilde;·¨&micro;&Auml;&frac14;&ocirc;&Ouml;&brvbar;&Oacute;&Aring;&raquo;&macr;&ETH;í&frac12;úì&Aring;&Acirc;&Ucirc;&Icirc;&Auml;.doc">下载</A>) 
+      <A href="http://noi.stinfo.net/jdjc/jdjc_dt.html">递推在程序设计中的应用</A>(<A 
+      href="http://noi.stinfo.net/lunwen/&sup3;&Igrave;&ETH;ò&Eacute;è&frac14;&AElig;&Ouml;&ETH;&micro;&Auml;&micro;&Yacute;&Iacute;&AElig;&Ocirc;&Euml;&Oacute;&Atilde;&frac14;°&Oacute;&Aring;&raquo;&macr;&raquo;&AElig;&eth;&copy;&Acirc;&Ucirc;&Icirc;&Auml;.doc">下载</A>) 
+      <A href="http://noi.stinfo.net/jdjc/jdjc_gzf.htm">构造法解题</A>(<A 
+      href="http://noi.stinfo.net/lunwen/&Ccedil;&sup3;&Igrave;&cedil;&sup1;&sup1;&Ocirc;ì·¨&frac12;&acirc;&Igrave;&acirc;&Aacute;&otilde;&frac14;&Icirc;é&ordf;&Acirc;&Ucirc;&Icirc;&Auml;.doc">下载</A>) 
+      </DIV></TD></TR></TBODY></TABLE>
+<P> </P></BODY></HTML>

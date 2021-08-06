@@ -1,0 +1,135 @@
+BODY {
+	SCROLLBAR-FACE-COLOR: #336699
+}
+A {
+	FONT-SIZE: 12px; COLOR: black; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: underline
+}
+A:hover {
+	FONT-SIZE: 12px; COLOR: #336699; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+BODY {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,sans-serif
+}
+P {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,sans-serif
+}
+DIV {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,sans-serif
+}
+SPAN {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,sans-serif
+}
+TH {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,sans-serif
+}
+TD {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Arial,sans-serif
+}
+H1 {
+	FONT-SIZE: 25px
+}
+.head {
+	FONT-WEIGHT: bold; FONT-SIZE: 25px; COLOR: #000; FONT-FAMILY: arial; TEXT-DECORATION: none
+}
+.med {
+	FONT-SIZE: 15px; COLOR: #000; FONT-FAMILY: arial
+}
+.small {
+	FONT-SIZE: 10px; COLOR: #000; FONT-FAMILY: arial
+}
+.table {
+	FONT-WEIGHT: bold; BACKGROUND: #326496; COLOR: #fff; LINE-HEIGHT: 13px; FONT-FAMILY: arial
+}
+.tabhead1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 15px; BACKGROUND: #326496; COLOR: #fff; LINE-HEIGHT: 20px; FONT-FAMILY: arial
+}
+.tabhead2 {
+	BACKGROUND: #4070a0; COLOR: #fff; LINE-HEIGHT: 15px; FONT-FAMILY: arial
+}
+.tabl1 {
+	BACKGROUND: #5090c0; COLOR: #fff; LINE-HEIGHT: 13px; FONT-FAMILY: arial
+}
+.tabl0 {
+	BACKGROUND: #60a0d0; COLOR: #fff; LINE-HEIGHT: 13px; FONT-FAMILY: arial
+}
+A.tabl0 {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: white; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: underline
+}
+A.tabl1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: white; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: underline
+}
+A.tabl0:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: white; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+A.tabl1:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: white; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+.Button {
+	FONT-WEIGHT: bold; BACKGROUND: #0033cc; COLOR: #fff
+}
+.bigone {
+	FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #336699; FONT-FAMILY: Comic Sans MS; TEXT-DECORATION: none
+}
+.bigone:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #336699; FONT-FAMILY: Comic Sans MS; TEXT-DECORATION: none
+}
+.bigone:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #336699; FONT-FAMILY: Comic Sans MS; TEXT-DECORATION: none
+}
+.bigone:active {
+	FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #336699; FONT-FAMILY: Comic Sans MS; TEXT-DECORATION: none
+}
+A.bigone {
+	FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #336699; FONT-FAMILY: Comic Sans MS; TEXT-DECORATION: none
+}
+A.bigone:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #336699; FONT-FAMILY: Comic Sans MS; TEXT-DECORATION: none
+}
+A.bigone:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #336699; FONT-FAMILY: Comic Sans MS; TEXT-DECORATION: none
+}
+A.bigone:active {
+	FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #336699; FONT-FAMILY: Comic Sans MS; TEXT-DECORATION: none
+}
+A.c10 {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: white; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+A.c10:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #efefef; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+.c10t {
+	PADDING-LEFT: 0.5cm; PADDING-BOTTOM: 2px; PADDING-TOP: 2px
+}
+A.c20 {
+	FONT-SIZE: 11px; COLOR: navy; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+A.c20:hover {
+	FONT-SIZE: 11px; COLOR: red; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+.c20t {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 0.5cm; PADDING-BOTTOM: 2px; PADDING-TOP: 2px
+}
+A.c30:hover {
+	FONT-SIZE: 10px; COLOR: #3030ff; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+A.c30 {
+	FONT-SIZE: 10px; COLOR: navy; FONT-FAMILY: Verdana, Helvetica, Helv; TEXT-DECORATION: none
+}
+.c30t {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 0.7cm; PADDING-BOTTOM: 3px; PADDING-TOP: 3px
+}
+.newstitle {
+	FONT-WEIGHT: bold; FONT-SIZE: 17px; COLOR: #000; FONT-FAMILY: arial
+}
+.newsdate {
+	FONT-WEIGHT: bold; FONT-SIZE: 17px; COLOR: #000; FONT-FAMILY: arial
+}
+.newsbody {
+	FONT-SIZE: 14px; COLOR: #000; FONT-FAMILY: arial
+}
+A.newsbody {
+	FONT-SIZE: 14px; COLOR: #229; FONT-FAMILY: arial
+}
+A.newsbody:hover {
+	FONT-SIZE: 14px; COLOR: #00f; FONT-FAMILY: arial
+}

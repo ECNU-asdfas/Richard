@@ -1,0 +1,325 @@
+
+<html>
+<head>
+<title>常用算法——深度优先搜索</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link rel="stylesheet" type="text/css" href="../style.css">
+<link href="STYLE.CSS" rel="stylesheet" type="text/css">
+<title></title>
+</head>
+<body leftmargin="0" topmargin="0" >
+ 
+<div id=menuDiv style='Z-INDEX: 2; VISIBILITY: hidden; WIDTH: 1px; POSITION: absolute; HEIGHT: 1px; BACKGROUND-COLOR: #9cc5f8'></div>
+<table align="center" cellpadding="0" cellspacing="0" width="757" >
+  <tr >
+    <td height="9" width="755"></td>
+  </tr>
+  <tr> 
+    <td width="755"> 
+      <table width="760" border="2" align="center" cellpadding="0" cellspacing="0" height="59">
+        <tr> 
+          <td width="158" height="94" align="right"> 
+            <p align="center"> <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="../../../download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="158" height="94" align="right">
+                <param name="movie" value="../IO.swf">
+                <param name="quality" value="high">
+                <embed src="../IO.swf" width="158" height="94" align="right" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash">
+                </embed>
+              </object> 
+          </td>
+          <td width="602" height="94"  align="left"> 
+            <p align="center"> <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="../../../download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="602" height="94" hspace="0" align="left">
+                <param name="movie" value="../top.swf">
+                <param name="quality" value="high">
+                <embed src="../top.swf" width="602" height="94" hspace="0" align="left" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash">
+                </embed>
+              </object> 
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr > 
+    <td height="9" width="755"></td>
+  </tr>
+</table>
+<table width="756" border="0" align="center" cellpadding="0" cellspacing="0" height="21" >
+  <tr > 
+    <td width="756" height="20" align="center">|| <a href="../../default.htm">返回</a>                           
+      || <a href="../index.htm">本站首页</a> ||<a href='index.htm'>奥赛信息</a>||<a href='../itjichu/index.htm'>计算机基础</a>||<a href='../pascal/index.htm'>pascal基础</a>||<a href='../shujujiegou/index.htm'>数据结构</a>||<a href='index.htm'><font color="#FF0000">经典算法</font></a>||<a href='../shitihb/index.htm'>试题汇编</a>||<a href='../zbjiaocheng/index.htm'>校本教程</a>||<a href='../zbxiti/index.htm'>自主练习</a>||                          
+    </td>
+  </tr>
+  <tr > 
+    <td height="6" background="../bg_02.gif"></td>
+  </tr>
+</table>
+<SCRIPT language=JavaScript>
+var currentpos,timer;
+
+function initialize()
+{
+timer=setInterval("scrollwindow()",50);
+}
+function sc(){
+clearInterval(timer);
+}
+function scrollwindow()
+{
+currentpos=document.body.scrollTop;
+window.scroll(0,++currentpos);
+if (currentpos != document.body.scrollTop)
+sc();
+}
+document.onmousedown=sc
+document.ondblclick=initialize
+</script>
+<table width="751" border="0" align="center" cellpadding="0" cellspacing="0" height="1">
+  <tr> 
+    <td valign="top" height="513" width="782"> 
+      <table width="778" border="0" align="center" cellpadding="0" cellspacing="0"  style="word-break: break-all" bgcolor="#FFFFFF" bordercolor="#FFFFFF" height="1">
+        <tr> 
+          <td width="594" bgcolor="#FFFFFF" height="39" colspan="2"> 
+            <p align="left"> ||&nbsp;<a href='index.htm'>经典算法&nbsp;</a>&gt;&gt;&nbsp;常用算法——深度优先搜索</p>
+          </td>
+          <td width="166" bgcolor="#FFFFFF" height="39"> 
+            <p align="right"> 双击自动滚屏&nbsp; <input type="button" name="close" value="关闭"  onClick="window.close();return false;" style="width: 47; height: 19">  
+            </p>
+          </td>
+        </tr>
+        <tr background="../bj.jpg" > 
+          <td  height="2" width="191" valign="middle" class="tdbg"> 　 </td>
+          <td  height="2" width="402" valign="middle" class="tdbg"> 　 </td>
+          <td  height="2" width="165" valign="middle" class="tdbg"> </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="267" width="764" valign="middle" class="tdbg" colspan="3"> 
+            <div align="right"> 
+              <table border="1" width="98%"  cellspacing="0" background="bj.jpg"  cellpadding="0" height="366" bgcolor="#CCCCCC">
+                <tr> 
+                  <td width="98%" height="376" valign="top" background="../bj.jpg"> 
+                      <font face="宋体" size="2"><font face="宋体" size="4"><b>
+                      <p style="MARGIN-TOP: 5px; MARGIN-BOTTOM: 0px" align="center">常用算法——深度优先搜索<br>
+                      </b></font>
+                      <p style="MARGIN-TOP: 5px; MARGIN-BOTTOM: 0px" align="center">佚名<br>
+                      <br>
+                      <div style="MARGIN: 10px 10px 5px; LINE-HEIGHT: 150%">
+                        <font face="宋体" size="2">
+                        <p align="left">　
+                        <h1>&nbsp;</h1>
+                        <p>我们在对一些问题进行求解时，会发现有些问题很难找到规律，或者根本无规律可寻。对于这样的问题，可以利用计算机运算速度快的特点，先搜索查找所有可能出现的情况，再根据题目条件从所有可能的情况中，删除那些不符合条件的解。</p>
+                        <p>【例题1】 有A、B、C、D、E 5本书，要分给张、王、刘、赵、钱5位同学，每人只能选1本。每个人都将自己喜爱的书填写在下表中。请你设计一个程序，打印出让每个人都满意的所有分书方案。 
+                        <pre><center>┌──┬───┬───┬───┬───┬───┐     
+││Ａ　│　Ｂ　│　Ｃ　│　Ｄ　│　Ｅ　│     
+├──┼───┼───┼───┼───┼───┤     
+│张│││√│√││00110
+├──┼───┼───┼───┼───┼───┤     
+│王│√│√│││√│11001
+├──┼───┼───┼───┼───┼───┤     
+│刘││√│√│││01100
+├──┼───┼───┼───┼───┼───┤     
+│赵││││√││00010
+├──┼───┼───┼───┼───┼───┤     
+│钱││√│││√│01001
+└──┴───┴───┴───┴───┴───┘     
+</center></pre>
+                        <p>★问题分析<br>
+                        &nbsp;&nbsp;&nbsp;  
+                        题目中每人喜爱哪本书是随意的，无规律可循，所以用穷举方法解较为合适。按穷举法的一般算法，可以暂不考虑一些条件，先求出满足部分条件的解，即可行解。然后，再加上尚未考虑的条件，从可行解中删除不符合这些条件的解，留下的就是问题的解。具体到本题中，我们可以先不考虑“让每人都满意”这个条件，这样，就只剩“每人选一本且只能选一本”这一个条件了。在这个条件下，可行解是5本书的所有全排列，一共有5!=120种情况。从这120种可行解中删去不符合“每人都满意”这一条件的解，剩下的就是本题的解。<br>
+                        &nbsp;&nbsp;&nbsp; 为编程方便，我们用1、2、3、4、5分别表示这5本书。这5个数字的—种全排列就是5本书的一种分法。例如54321就表示第五本书(即E)分给张，第四本书(即D)分给王……，第—本书(即A)分给钱。<br> 
+                        &nbsp;&nbsp;&nbsp; 每个人“喜爱书表”，在程序中我们用二维数组Like[i,j]来表示，1表示喜爱，0表示不喜爱。排列的产生可以用穷举法，也可以用专门算法。 
+                        <p>★算法设计：<br>
+                        &nbsp;&nbsp;&nbsp; 第一步：产生5个数字的一个全排列；<br> 
+                        &nbsp;&nbsp;&nbsp;  
+                        第二步：检查所产生的全排列是否符合“喜爱书表”，如果符合就输出；<br>
+                        &nbsp;&nbsp;&nbsp;  
+                        第三步：检查是否所有排列都产生了，如果没有产生完，则返回第一步；<br>
+                        &nbsp;&nbsp;&nbsp; 第四步：结束。<br> 
+                        &nbsp;&nbsp;&nbsp;  
+                        根据题目给出的条件，还可以对上面算法进行一些改进。例如产生一个全排列12345时，第一个数1表示将第一本书给小张。但从表中可以看出，这是不可能的，因为小张只喜欢第三、第四本书。也就是说，１X  
+                        X X X这一类分法是不符合条件的。由此使我们想到，如果选定第一本书后，就立即检查一下是否符合条件，当发现第一个数的选择不符合条件时，就不必再产生后面的4个数了，这样做可以减少很多的运算量。换句话说，第一个数只在3和4中选择，这样就可以减少3／5的运算量。同理，在选定了第一个数后，其他4个数字的选择也可以用类似的方法处理，即选择第二个数后，立即检查是否符合条件。例如，第一个数选3，第二个数选4后，立即进行检查，发现不符合条件，就另选第二个数。这样就又把34XXX一类的分法删去了，从而又减少了一部分运算量。<br> 
+                        &nbsp;&nbsp;&nbsp;  
+                        综上所述，改进后本题算法应该是：在产生各种排列时，每增加一个数字，就检查一下该数的加入是否符合条件，如不符合，就立刻换一个；若符合条件，则再产生下一个数。因为从第i本书到第i+1本书的寻找过程是相同的，所以可以用递归方法编程。
+                        <p>★算法框图
+                        <pre><center>PROCEDURE TRY(i)；(递归算法)
+┌─────────────────────┐
+│For j:= 1 to 5 do │
+├─┬───────────────────┤
+││T＼第I个学生喜爱第j本书／F│
+│├────────────┬──────┤
+││记录第 i个数││
+│├────────────┤│
+││＼i= 5／││
+││T＼／     F ││
+│├─────┬──────┤│
+││打印一个解│Try(i+1)││
+│├─────┴──────┤│
+││删去第i 个数字││
+└─┴────────────┴──────┘</center></pre>
+                        &nbsp;&nbsp;&nbsp; 我们用二维数组like存放“喜爱书表”，用集合flag存放已分出书的编号，数组book存储各人所分得书的编号，如book[1]=3，则表示第一个同学(小张)分得编号为3的书。<br> 
+                        &nbsp;&nbsp;&nbsp; 递归程序如下(程序中将小张的喜欢的书改成了ACD)： 
+                        <pre>Program allot_book(output);
+  type five=1..5;
+  const like: array[five,five] of 0..1 =((1, 0, 1,1 ,0),
+       (1,1,0,0,1),(0,1,1,0,0),(0,0,0,1,0),(0,1,0,0,1));
+       {个人对各种书的喜好情况}
+  name:array[five] of string[5] = 
+       ('zhang', 'wang','liu', 'zhao', 'qian' );
+       {数组name存放学生姓名}
+var book: array[1..5] of 0..5;{存放各人分配到的书的编号}
+    flag: set of five;
+    c: integer;
+procedure print;   {打印分配方案}
+   var i: integer;
+   begin
+     inc(c);           {计数，统计得到分配方案数}
+     writeln( 'answer', c,':');
+     for i:=1 to  5 do
+        writeln(name[i]: 10,':', chr(64 + book[i] ) );
+end;
+procedure try(i: integer);  {判断第 I 个学生分得书的编号}
+  var j: integer;
+  begin
+   for j:=1 to 5 do
+        if not(j in flag) and (like[i,j]&gt;0) then
+   begin     {第j本书未选过，且第I个学生喜爱第j本书}
+        flag:= flag + [j];  {修改已选书编号集合，加入第j本书}
+        book[i]:=j;          {记录第 I 个学生分得书的编号}
+   if i= 5 then print   {I = 5,5 个学生都分到自己喜爱的书}
+      else try(i + 1);
+      {i&lt;5,继续搜索下一个学生可能分到书的情况}
+   flag:= flag - [j];   {后退一步，以便查找下一种分配方案}
+   book[i]:=0;
+  end
+end;
+{  main prg  }
+begin
+  flag:= [];
+  c:=0;
+  try(1);
+  readln
+end.</pre>
+                        运行结果为:<br>
+                        &nbsp; zhang: C<br> 
+                        &nbsp; wang: A<br> 
+                        &nbsp; liu:B<br> 
+                        &nbsp; Zhao: D<br> 
+                        &nbsp; qian: E<br> 
+                        &nbsp;&nbsp;&nbsp;  
+                        另外，此题也可以用非递归的算法解。非递归算法的基本思想是用栈来存放被选中书的编号。设dep表示搜索深度，r为待选书号，p为搜索成功标志。算法表示如下（非递归算法）。
+                        <pre><center>PROCEDURE dfs；(非递归算法)
+┌────────────────────────────┐
+│Dep:=0│
+├─┬──────────────────────────┤
+││dep:=dep+1│
+│├──────────────────────────┤
+││j:=0; p:=False；│
+│├─┬────────────────────────┤
+│││j:=j+1│
+││├────────────────────────┤
+│││T＼子结点mr符合统计／F│
+││├──────────────┬─────────┤
+│││产生子结点，并记录│T＼Mxar／F│
+││├──────────────┼────┬────┤
+│││T＼子结点是目标／F│回溯│P:=Fatse│
+││├──────┬───────┤││
+│││输出并出栈│P:= true│││
+│├─┴──────┴───────┴────┴────┤
+││UNTIL p=True│
+├─┴──────────────────────────┤
+│UNTIL dep= 0│
+└────────────────────────────┘
+</center></pre>
+                        &nbsp;&nbsp;&nbsp;  
+                        尽管深度优先基本算法类似，但在处理不同问题时，在具体处理方法、编程的技巧上，却不尽相同；有时甚至会有很大的差别。<br>
+                        &nbsp;&nbsp;&nbsp; 比如，例1的解法还可以这样来设计：从表中看出，赵同学只喜爱D这一本书，无其它选择余地。因此，赵同学得到书的编号在搜索前就确定下来了。为了编程方便，可以把赵钱2人位置交换，这样程序只需对张王刘钱4人情况进行搜索测试。<br> 
+                        &nbsp;&nbsp;&nbsp; 另外，发现表示“喜爱书表”的数组有多个0，为减少不必要的试探，我们改用链表来表示。例如第三位同学的链表是：Like[3，0]=2.Like[3，2]=3.Like[3，3]=0，其中，Like[3，0]=2表示他喜爱的第一本书编号是2，Like[3，2]=3即表示喜爱的编号为2的书后面是编号为3的书，Like[3，3]=0，表示编号为3的书是其最后1本喜爱的书。<br> 
+                        &nbsp;&nbsp;&nbsp;  
+                        这样基本算法不变，但程序改进如下：
+                        <pre>Program allot_book(output);  {linking List}
+  type five=1..5;{将小张的喜欢的书改成了ACD}
+  const  Link: Array[ 1..5,0..5 ] of 0..5 = 
+    ((1,3,0,4,0,0),(1,2,5,0,0,0),(2,0,3,0,0,0),(4,0,0,0,0,0),(2,0,5,0,0,0));
+    {个人对各种书的喜好情况}
+  name:array[five] of string[5] = 
+    ('zhang', 'wang','liu', 'zhao', 'qian' );
+    {数组name存放学生姓名}
+var book: array[1..5] of 0..5;{存放各人分配到的书的编号}
+    flag: set of five;
+    c: integer;
+procedure print;   {打印分配方案}
+   var i: integer;
+   begin
+     inc(c);           {计数，统计得到分配方案数}
+     writeln( 'answer', c,':');
+     for i:=1 to  5 do
+        writeln(name[i]: 10,':', chr(64 + book[i] ) );
+end;
+procedure try(i: integer);  {判断第 I 个学生分得书的编号}
+  var j: integer;
+  begin
+   j:=0;
+   repeat
+       j:=link[i,j];     { 取链表中喜爱书编号j }
+       If not(j in flag) and (j&gt;0) then
+       Begin
+          flag:= flag+ [j];
+          book[i]:=j;
+          if i=5 then  print
+                   else  try(i + 1);
+   flag:= flag - [j];   {后退一步，以便查找下一种分配方案}
+   book[i]:=0;
+       End;
+     until j = 0;
+end;
+{    main prg    }
+begin
+  flag:= [];
+  c:=0;
+  try(1);
+  readln
+end.</pre>
+                        <!-- #EndEditable -->
+                        <script src="../../../lib/footer.js"> 
+</script>
+                        <!-- #EndTemplate -->
+                        </font>
+                      </div>
+                      <p>
+                        <br>
+                        </font>
+                      </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="2" width="758" valign="middle" class="tdbg" colspan="3" bgcolor="#C0C0C0"> 
+            　 </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="2" width="191" valign="middle" class="tdbg" bgcolor="#C0C0C0"> 
+            　 </td>
+          <td  height="2" width="402" valign="middle" class="tdbg" bgcolor="#C0C0C0"> 
+            <p align="center" style="margin-top: 5; margin-bottom: 0">&nbsp; 
+          </td>
+          <td  height="2" width="165" valign="middle" class="tdbg" bgcolor="#C0C0C0"> 
+            　 </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="2" width="758" valign="middle" class="tdbg" colspan="3" bgcolor="#C0C0C0"> 
+            　 </td>
+        </tr>
+        <tr background="../bj.jpg"> 
+          <td  height="2" width="758" valign="middle" class="tdbg" colspan="3" bgcolor="#C0C0C0"> 
+            　 </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<div align="center"> <font color="#000080" size="2"><br>
+   制作与维护</a>：涡阳县第二中学 许建峰</font></div>
+<p align="center">　</p>
+</body>                                 
+</html>                                 
