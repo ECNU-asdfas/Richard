@@ -1,26 +1,8 @@
-# 待写比赛记录
-
-eoj月赛5
-
-eoj月赛6
-
 # 待做题单：
-
-## 可持久化线段树：
-
-### HDU
-
-5919
-
-## KDTree：
-
-多校 HDU-1 6951 
 
 ## 线段树
 
-多校 nowcode-7 B
-
-CF 722C 线段树维护前缀后缀
+多校 nowcode-7 B(前置看看hdu6406)
 
 多校 HDU-2 6967 维护矩阵
 
@@ -28,19 +10,19 @@ CF266E 维护矩阵
 
 SHOI2008 堵塞的交通
 
-ECFinal G http://codeforces.com/gym/103069/problem/G //https://blog.csdn.net/qq_45323960/article/details/116708249
-
-维护等差数列
-
 https://blog.bill.moe/segment-tree-beats-notes/ 线段树区间最值与历史最值-segment tree beats!的扩展
 
 洛谷P3309 线段树维护凸包
+
+https://acm.ecnu.edu.cn/contest/415/problem/E/ and or
 
 ## 树链剖分
 
 多校 HDU-2 6962
 
 ## 杂
+
+多校 HDU-4 6989 单调栈/笛卡尔树/离线历史求和线段树
 
 多校 HDU-3 6982 优惠 最小生成树
 
@@ -50,17 +32,31 @@ https://blog.bill.moe/segment-tree-beats-notes/ 线段树区间最值与历史�
 
 多校 HDU-6 7035 博弈论
 
-牛客 nowcoder-8 F 机器人
-
-https://www.cnblogs.com/tpgzy/p/9433607.html 莫比乌斯反演
+多校 nowcoder-8 F 机器人
 
 百度之星复赛1005 搜索 hdu7098
 
+https://acm.ecnu.edu.cn/contest/415/problem/F/
+
+## KDTree：
+
+多校 HDU-1 6951 
+
 # 待学知识点、待写板子
 
-博弈那篇 加上威佐夫博弈
+常系数线性递推->生成函数
 
-BSGS 多校 HDU-4 6989
+*BSGS扩展
+
+杜教筛
+
+min25筛
+
+多项式相关
+
+带反悔贪心
+
+wqs二分
 
 整体二分 cdq分治
 
